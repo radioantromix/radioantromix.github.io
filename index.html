@@ -1,16 +1,15 @@
-<script type="text/javascript" src="https://hosted.muses.org/mrp.js"></script>
-<script type="text/javascript">
-MRP.insert({
-'url':'http://node-19.zeno.fm:80/0swxrk8k8mzuv',
-'codec':'mp3',
-'volume':100,
-'autoplay':true,
-'jsevents':true,
-'buffering':0,
-'title':'antromix',
-'wmode':'transparent',
-'skin':'wmp',
-'width':386,
-'height':47
-});
-</script>
+<div id="stream" style="width:auto; height:300px;"></div>
+<script src="https://sistemahost.com/playergenerator/js/jquery-3.2.1.min.js"></script>
+<script src="https://sistemahost.com/playergenerator/js/player.js"></script>
+
+<script> 
+$('#stream').lunaradio({     streamurl: 'http://node-19.zeno.fm:80/0swxrk8k8mzuv', 
+    radioname: '', 
+    coverimage: '', 
+    onlycoverimage: false,     userinterface: 'big',     backgroundcolor: '#ffffff', 
+    fontcolor: '#000000',     hightlightcolor: '#6c757d',     fontname: 'Raleway', 
+    googlefont: 'Raleway:wght@100',     fontratio: '0.4',     scroll: 'true', 
+    coverstyle: 'animated',     usevisualizer: 'real',     visualizertype: '1', 
+    streamtype: 'shoutcast2',     shoutcastpath: '/stream',     shoutcastid: '1', 
+    autoplay: 'false',     metadatainterval: '5000',     volume: '100', 
+    usestreamcorsproxy: 'true', }); </script>
