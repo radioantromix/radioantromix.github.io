@@ -1,9 +1,8 @@
 /*
-LUNA RADIO PLAYER V5.20.07.07
-https://www.luna-universe.com
+música de todos los tiempos
+en un solo lugar
 
-Copyright (C) SODAH | JOERG KRUEGER
-https://www.sodah.de
+
 
 */
 (function(d, D) {
