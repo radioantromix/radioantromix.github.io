@@ -1,87 +1,73 @@
+<!DOCTYPE html>
+<head>
+
+<title>Universe Radio Player</title>
+<link rel="shortcut icon" href="img/icon.png"/>
 <script src="js/jquery-3.2.1.min.js"></script>
-<script src="js/lunaradio.js"></script>
+<script src="js/lunaplayer-full.js"></script>
 </head>
+<body>
 
-<body style="margin:0px">
+<style>
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+</style>
 
-<div id="lunaradio" style='width:100%; height:100%;background-image: url("https://www.cutralcoalinstante.com/wp-content/uploads/2020/05/operador-de-radio.jpeg"); background-repeat: no-repeat; background-size: cover; background-position: center;
--webkit-border-top-left-radius: 0px;
-  -webkit-border-top-right-radius: 0px;
-  -webkit-border-bottom-right-radius: 0px;
-  -webkit-border-bottom-left-radius: 0px;
-  -moz-border-radius-topleft: 0px;
-  -moz-border-radius-topright: 0px;
-  -moz-border-radius-bottomright: 0px;
-  -moz-border-radius-bottomleft: 0px;
-  border-top-left-radius: 0px;
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
-  border-bottom-left-radius: 0px;
-  border: none;'>
-<div a href="RADIO PRO" title="RADIO PRO"></a> Desarrollado por: antromix <a href="CHAN" title="SEOMARCA"></a></div>
+<div id="mylunaradio" style='width:100%; height:100%; background: url(img/background.jpg) bottom / cover no-repeat;
+-webkit-border-top-left-radius: 10px;
+  -webkit-border-top-right-radius: 10px;
+  -webkit-border-bottom-right-radius: 10px;
+  -webkit-border-bottom-left-radius: 10px;
+  -moz-border-radius-topleft: 10px;
+  -moz-border-radius-topright: 10px;
+  -moz-border-radius-bottomright: 10px;
+  -moz-border-radius-bottomleft: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border: none;'></div> 
 
 
-<script src="https://dl.dropboxusercontent.com/s/45u6xzcnnri2re3/jquery-3.2.1.min.js?dl=0" type="text/javascript"></script>
-<script src="https://dl.dropboxusercontent.com/s/ai2ny5smsk07k7m/lunaradio.min.js?dl=0" type="text/javascript"></script>
-
-
-<div id="lunaradio" style="width:100%; height:550px;"></div>
-
-<script type="3bc5e4e5245e387f3290c38f-text/javascript">
-$("#lunaradio").lunaradio({
-
-	        userinterface: "big",
-		backgroundcolor: "rgba(14,16,21,0.5)",
-		fontcolor: "#ffffff",
-		hightlightcolor: "#fa225b",
-		fontname: "",
-		googlefont: "",
-		fontratio: "0.4",
-		radioname: "THE POWER OF MUSIC",
-		offlinetext: "Radio is offline",
-		scroll: "true",
-		scrollradioname: "left",
-		scrolltitle: "right",
-		scrollradionamespeed: "0.25",
-		scrolltitlespeed: "0.25",
-		coverimage: "https://i.imgur.com/kvwx3iO.png",
-		onlycoverimage: "false",
-		coverstyle: "circle",
-		usevisualizer: "real",
-		visualizertype: "5",
-		multicolorvisualizer: "false",
-		color1: "#e66c35",
-		color2: "#d04345",
-		color3: "#85a752",
-		color4: "#067dcc",
-		visualizeropacity: "0.9",
-		visualizerghost: "0.0",
-		visualizerblur: "0",
-		visualizerghostblur: "0",
-		itunestoken: "1000lIPN",
-		metadatatechnic: "fallback",
-		ownmetadataurl: "",
-		streamurl: "http://node-23.zeno.fm:80/0swxrk8k8mzuv",
-		streamtype: "shoutcast2",
-		icecastmountpoint: "",
-		radionomyid: "",
-		radionomyapikey: "",
-		radiojarid: "",
-	        radiozenoid: "0swxrk8k8mzuv",
-		radiocoid: "",
-		shoutcastpath: "/electronic.mp3",
-		shoutcastid: "1",
-		streamsuffix: "",
-		metadatainterval: "20000",
-		volume: "90",
-		debug: "false",
-		uselocalstorage: "false",
-		autoplay: "false",
-		displayliveicon: "true",
-		displayvisualizericon: "true",
-	usestreamcorsproxy: "false", 
-	corsproxy: "",
-	});
+<script>
+$("#mylunaradio").lunaradio({
+userinterface: "big", 
+backgroundcolor: "",
+fontcolor: "#ffffff",
+hightlightcolor: "#ff0000", 
+fontname: "Playball", 
+googlefont: "Playball&display=swap", 
+fontratio: "0.4", 
+radioname: "Werner Stream Hd",
+scroll: "true", 
+coverimage: "",
+onlycoverimage: "false",
+coverstyle: "",
+usevisualizer: "real", 
+visualizertype: "3", 
+metadatatechnic: "",
+ownmetadataurl: "",
+usestreamcorsproxy: "true",
+corsproxy: "https://cors-anywhere.herokuapp.com/",
+streamurl: "https://stream.zenolive.com/c2hxmk8k8mzuv", 
+streamtype: "radiozeno", //shoutcast2, icecast2, radiozeno, radionomy, radiojar, radioco
+icecastmountpoint: "",
+shoutcastpath: "/stream",
+shoutcastid: "1", 
+streamsuffix: "", 
+radionomyid: "", 
+radionomyapikey: "",
+radiozenoid: "c2hxmk8k8mzuv", 
+radiojarid: "",  
+radiocoid: "",
+itunestoken: "1000lIPN", 
+metadatainterval: "15000", 
+volume: "100",
+debug: "false",
+});
 </script>
-<script src="https://ajax.cloudflare.com/cdn-cgi/scripts/7089c43e/cloudflare-static/rocket-loader.min.js" data-cf-settings="3bc5e4e5245e387f3290c38f-|49" defer></script>
 </body>
+</html>
