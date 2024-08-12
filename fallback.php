@@ -46,7 +46,7 @@ function useCurl($sURL) {
 	$options = array(
 		CURLOPT_CUSTOMREQUEST  =>"GET",        
 		CURLOPT_POST           =>false,        
-		CURLOPT_USERAGENT      => $user_agent, 
+		CURLOPT_USERAGENT      => false, 
 		CURLOPT_RETURNTRANSFER => true,     
 		CURLOPT_HEADER         => false,    
 		CURLOPT_FOLLOWLOCATION => true,     
