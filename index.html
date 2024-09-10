@@ -9,6 +9,67 @@
     <button id="send-button">Enviar</button>
   </div>
 </div>
+
+<script>
+  const messageInput = document.getElementById('message-input');
+  const sendButton = document.getElementById('send-button');
+  const chatMessages = document.getElementById('chat-messages');
+
+  sendButton.addEventListener('click', () => {
+    const message = messageInput.value.trim();
+    if (message) {
+      const messageElement = document.createElement('div');
+      messageElement.textContent = message;
+      chatMessages.appendChild(messageElement);
+      messageInput.value = '';
+    }
+  });
+</script>
+```
+
+_CSS_
+```
+#chat-container {
+  width: 500px;
+  height: 600px;
+  border: 1px solid #ccc;
+  padding: 20px;
+}
+
+#chat-header {
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+#chat-messages {
+  padding: 20px;
+  height: 400px;
+  overflow-y: scroll;
+}
+
+#chat-input {
+  padding: 20px;
+}
+
+#message-input {
+  width: 70%;
+  height: 30px;
+  padding: 10px;
+}
+
+#send-button {
+  width: 20%;
+  height: 30px;
+  background-color: #4CAF50;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+  </div>
+</div>
 <script src="js/jquery-3.2.1.min.js"></script>
 <script src="js/lunaradio.js"></script>
 </head>
