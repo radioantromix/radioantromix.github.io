@@ -236,7 +236,7 @@
             CHAT EN VIVO
           </span>
         </div>
-        <p class="text-xs text-white/70 font-sans tracking-wide">La Mejor Música en Vivo | 24/7 </p>
+        <p class="text-xs text-white/70 font-sans tracking-wide">La Mejor Música en Vivo | Stream Zeno FM</p>
       </div>
     </div>
 
@@ -306,7 +306,7 @@
 
       <!-- TikTok Button con Borde Neón Giratorio (Fondo Fijo Negro) -->
       <div class="neon-border-wrapper w-12 h-12 shrink-0 group active:scale-90 active:-rotate-12 transition-transform duration-150 cursor-pointer" style="--neon-color1: #ff0050; --neon-color2: #00f2fe; --neon-glow: rgba(255, 0, 80, 0.7);">
-        <a href="https://www.tiktok.com/@radioantromix" target="_blank" rel="noopener noreferrer" class="neon-border-content social-btn !bg-black hover:!bg-neutral-900 text-white" title="TikTok">
+        <a href="https://www.facebook.com/Radioantromix" target="_blank" rel="noopener noreferrer" class="neon-border-content social-btn !bg-black hover:!bg-neutral-900 text-white" title="TikTok">
           <i class="fab fa-tiktok text-lg group-hover:scale-110 group-active:scale-125 transition-transform text-white"></i>
         </a>
       </div>
@@ -412,7 +412,15 @@
       serverTimestamp 
     } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 
-    
+    // Configuración Firebase Real para Firestore en vivo
+    const firebaseConfig = {
+      projectId: "chilego",
+      appId: "1:687060463982:web:1f0991d8835b62c746d17f",
+      apiKey: "AIzaSyCDrzHUKCh86Mo3jfAvOhpfvrF_H007JIg",
+      authDomain: "chilego.firebaseapp.com",
+      firestoreDatabaseId: "ai-studio-remixaitalkradio-032ea431-7780-49fb-a98f-f5ffc96d2c36",
+      storageBucket: "chilego.firebasestorage.app",
+      messagingSenderId: "687060463982"
     };
 
     let db = null;
