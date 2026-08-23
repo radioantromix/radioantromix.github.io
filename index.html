@@ -40,38 +40,35 @@
     overflow-x:hidden;
   }
   ::selection{ background:var(--magenta); color:#fff; }
+  .hidden{ display:none !important; }
 
   /* ---------- LAYOUT SHELL ---------- */
   .shell{
     display:grid;
     grid-template-columns: 220px 1fr;
-    grid-template-rows: 64px auto auto auto auto;
+    grid-template-rows: 64px auto auto auto;
     grid-template-areas:
       "header header"
-      "access access"
       "sidebar banner"
-      "sidebar player"
-      "sidebar chat";
+      "sidebar access"
+      "sidebar room";
   }
   @media (max-width: 860px){
     .shell{
       grid-template-columns: 1fr;
       grid-template-areas:
         "header"
-        "access"
         "banner"
         "sidebar"
-        "player"
-        "chat";
+        "access"
+        "room";
     }
   }
 
   /* ---------- HEADER ---------- */
   header.site-header{
     grid-area: header;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
+    display:flex; align-items:center; justify-content:space-between;
     padding: 0 28px;
     border-bottom:1px solid var(--line);
     background: rgba(10,9,18,0.85);
@@ -81,8 +78,7 @@
   .logo{
     display:flex; align-items:center; gap:10px;
     font-family:var(--font-display);
-    font-size:22px;
-    letter-spacing:0.5px;
+    font-size:22px; letter-spacing:0.5px;
   }
   .logo .dot{
     width:9px; height:9px; border-radius:50%;
@@ -90,43 +86,24 @@
     box-shadow:0 0 10px var(--magenta), 0 0 20px var(--magenta);
     animation: pulse-dot 1.4s ease-in-out infinite;
   }
-  @keyframes pulse-dot{
-    0%,100%{ opacity:1; transform:scale(1); }
-    50%{ opacity:0.4; transform:scale(0.75); }
-  }
-  nav.main-menu{
-    display:flex; align-items:center; gap:28px;
-  }
+  @keyframes pulse-dot{ 0%,100%{opacity:1; transform:scale(1);} 50%{opacity:0.4; transform:scale(0.75);} }
+  nav.main-menu{ display:flex; align-items:center; gap:28px; }
   nav.main-menu a{
-    color:var(--text-mid);
-    text-decoration:none;
-    font-size:13px;
-    font-weight:700;
-    letter-spacing:1.2px;
-    text-transform:uppercase;
-    position:relative;
-    padding:6px 2px;
-    transition:color .2s ease;
+    color:var(--text-mid); text-decoration:none; font-size:13px; font-weight:700;
+    letter-spacing:1.2px; text-transform:uppercase; position:relative; padding:6px 2px;
+    transition:color .2s ease; cursor:pointer;
   }
   nav.main-menu a::after{
-    content:'';
-    position:absolute; left:0; bottom:0;
-    width:0%; height:2px;
-    background:linear-gradient(90deg,var(--cyan),var(--magenta));
-    transition:width .25s ease;
+    content:''; position:absolute; left:0; bottom:0; width:0%; height:2px;
+    background:linear-gradient(90deg,var(--cyan),var(--magenta)); transition:width .25s ease;
   }
   nav.main-menu a:hover{ color:var(--text-hi); }
   nav.main-menu a:hover::after{ width:100%; }
   .menu-toggle{ display:none; background:none; border:1px solid var(--line); color:var(--text-hi); width:38px; height:38px; border-radius:8px; font-size:18px; cursor:pointer; }
-
   @media (max-width:860px){
     nav.main-menu{
-      position:absolute; top:64px; right:0; left:0;
-      flex-direction:column; align-items:flex-start; gap:0;
-      background:var(--bg-panel);
-      border-bottom:1px solid var(--line);
-      max-height:0; overflow:hidden;
-      transition:max-height .3s ease;
+      position:absolute; top:64px; right:0; left:0; flex-direction:column; align-items:flex-start; gap:0;
+      background:var(--bg-panel); border-bottom:1px solid var(--line); max-height:0; overflow:hidden; transition:max-height .3s ease;
     }
     nav.main-menu.open{ max-height:300px; }
     nav.main-menu a{ padding:14px 24px; width:100%; border-bottom:1px solid var(--line); }
@@ -141,173 +118,192 @@
     background:linear-gradient(180deg, var(--bg-panel), var(--bg-deep) 70%);
   }
   aside.submenu .sm-title{
-    font-family:var(--font-mono);
-    font-size:10px;
-    letter-spacing:2px;
-    text-transform:uppercase;
-    color:var(--text-low);
-    margin-bottom:14px;
-    padding-left:4px;
+    font-family:var(--font-mono); font-size:10px; letter-spacing:2px; text-transform:uppercase;
+    color:var(--text-low); margin-bottom:14px; padding-left:4px;
   }
   aside.submenu ul{ list-style:none; display:flex; flex-direction:column; gap:4px; }
   aside.submenu a{
-    display:flex; align-items:center; gap:10px;
-    color:var(--text-mid);
-    text-decoration:none;
-    font-size:13.5px;
-    font-weight:600;
-    padding:10px 12px;
-    border-radius:9px;
-    border:1px solid transparent;
-    transition: all .2s ease;
+    display:flex; align-items:center; gap:10px; color:var(--text-mid); text-decoration:none;
+    font-size:13.5px; font-weight:600; padding:10px 12px; border-radius:9px; border:1px solid transparent;
+    transition: all .2s ease; cursor:pointer;
   }
   aside.submenu a .ic{ width:16px; text-align:center; opacity:0.85; }
-  aside.submenu a:hover{
-    color:var(--text-hi);
-    background:rgba(255,255,255,0.04);
-    border-color:var(--line);
-  }
+  aside.submenu a:hover{ color:var(--text-hi); background:rgba(255,255,255,0.04); border-color:var(--line); }
   aside.submenu a.active{
-    color:#fff;
-    background:linear-gradient(90deg, rgba(0,229,199,0.14), rgba(255,62,154,0.10));
-    border-color:rgba(0,229,199,0.35);
+    color:#fff; background:linear-gradient(90deg, rgba(0,229,199,0.14), rgba(255,62,154,0.10)); border-color:rgba(0,229,199,0.35);
   }
 
   /* ---------- BANNER ---------- */
   .banner{
-    grid-area: banner;
-    position:relative;
-    padding:46px 40px 40px;
-    overflow:hidden;
-    border-bottom:1px solid var(--line);
-    min-height:260px;
-    display:flex; flex-direction:column; justify-content:center;
+    grid-area: banner; position:relative; padding:46px 40px 40px; overflow:hidden;
+    border-bottom:1px solid var(--line); min-height:230px; display:flex; flex-direction:column; justify-content:center;
   }
   .banner .waveform{
-    position:absolute; left:0; right:0; bottom:0;
-    height:120px;
-    display:flex; align-items:flex-end; gap:4px;
-    padding:0 40px;
-    opacity:0.55;
-    pointer-events:none;
+    position:absolute; left:0; right:0; bottom:0; height:110px; display:flex; align-items:flex-end; gap:4px;
+    padding:0 40px; opacity:0.5; pointer-events:none;
   }
   .banner .waveform span{
-    flex:1;
-    background:linear-gradient(180deg, var(--cyan), var(--magenta));
-    border-radius:3px 3px 0 0;
+    flex:1; background:linear-gradient(180deg, var(--cyan), var(--magenta)); border-radius:3px 3px 0 0;
     animation: wave 1.2s ease-in-out infinite;
   }
-  @keyframes wave{
-    0%,100%{ transform:scaleY(0.25); }
-    50%{ transform:scaleY(1); }
-  }
+  @keyframes wave{ 0%,100%{ transform:scaleY(0.25);} 50%{ transform:scaleY(1);} }
   .banner-tag{
-    display:inline-flex; align-items:center; gap:8px;
-    font-family:var(--font-mono);
-    font-size:11px;
-    letter-spacing:2px;
-    color:var(--amber);
-    background:rgba(255,176,32,0.1);
-    border:1px solid rgba(255,176,32,0.35);
-    padding:5px 12px;
-    border-radius:999px;
-    width:fit-content;
-    margin-bottom:18px;
+    display:inline-flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:11px;
+    letter-spacing:2px; color:var(--amber); background:rgba(255,176,32,0.1);
+    border:1px solid rgba(255,176,32,0.35); padding:5px 12px; border-radius:999px; width:fit-content; margin-bottom:18px;
   }
-  .banner-tag .r{
-    width:6px; height:6px; border-radius:50%;
-    background:#ff4444;
-    box-shadow:0 0 8px #ff4444;
-    animation:pulse-dot 1.2s infinite;
-  }
+  .banner-tag .r{ width:6px; height:6px; border-radius:50%; background:#ff4444; box-shadow:0 0 8px #ff4444; animation:pulse-dot 1.2s infinite; }
   .banner h1{
-    font-family:var(--font-display);
-    font-size:clamp(42px, 7vw, 78px);
-    line-height:0.95;
-    letter-spacing:0.5px;
-    background:linear-gradient(90deg,#fff, var(--cyan) 55%, var(--magenta));
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
+    font-family:var(--font-display); font-size:clamp(38px, 6vw, 68px); line-height:0.95; letter-spacing:0.5px;
+    background:linear-gradient(90deg,#fff, var(--cyan) 55%, var(--magenta)); -webkit-background-clip:text; background-clip:text; color:transparent;
     max-width:720px;
   }
-  .banner p{
-    margin-top:14px;
-    color:var(--text-mid);
-    max-width:480px;
-    font-size:14.5px;
-    line-height:1.6;
-    z-index:2;
-    position:relative;
-  }
+  .banner p{ margin-top:14px; color:var(--text-mid); max-width:480px; font-size:14.5px; line-height:1.6; z-index:2; position:relative; }
 
-  /* ---------- PLAYER ---------- */
-  .player{
-    grid-area:player;
-    padding:20px 40px;
-    background:var(--bg-panel);
-    border-bottom:1px solid var(--line);
+  /* ---------- ACCESO (PÁGINA PRINCIPAL) ---------- */
+  .access{
+    grid-area:access; padding:56px 40px 60px; text-align:center; border-bottom:1px solid var(--line);
   }
-  .player-controls-row{
-    display:flex; align-items:center; gap:20px;
-    flex-wrap:wrap;
+  .access .eyebrow{ font-family:var(--font-mono); font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--text-low); margin-bottom:10px; }
+  .access h2{ font-family:var(--font-display); font-size:32px; letter-spacing:0.5px; margin-bottom:36px; }
+  .access-grid{ display:flex; gap:22px; justify-content:center; flex-wrap:wrap; max-width:960px; margin:0 auto; }
+  .access-btn{
+    position:relative; width:270px; min-height:150px; border-radius:18px; border:1px solid var(--line); cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; color:#fff; overflow:hidden;
+    transition: transform .22s ease, box-shadow .22s ease;
   }
+  .access-btn:hover{ transform:translateY(-6px); }
+  .access-btn .btn-label{ font-size:16px; font-weight:800; letter-spacing:0.4px; }
+  .access-btn .btn-sub{ font-size:11.5px; color:rgba(255,255,255,0.75); font-family:var(--font-mono); letter-spacing:0.5px; }
+  .btn-oyente{ background:linear-gradient(160deg, var(--green), var(--green-dark)); }
+  .btn-oyente:hover{ box-shadow:0 14px 34px rgba(31,214,95,0.35); }
+  .btn-dj{ background:linear-gradient(160deg, var(--blue), var(--blue-dark)); }
+  .btn-dj:hover{ box-shadow:0 14px 34px rgba(45,124,255,0.4); }
+  .btn-admin{ background:linear-gradient(160deg, #1b1a26, var(--black-btn)); border-color:rgba(255,255,255,0.14); }
+  .btn-admin:hover{ box-shadow:0 14px 34px rgba(0,0,0,0.55); }
+  .icon-headphone,.icon-admin,.icon-oyente{ width:44px; height:44px; filter:drop-shadow(0 6px 8px rgba(0,0,0,0.35)); }
 
-  /* ---------- VIDEO DEL DJ VISIBLE PARA EL OYENTE ---------- */
+  /* ---------- MODAL BASE ---------- */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(6,5,12,0.75); backdrop-filter: blur(6px);
+    display:none; align-items:center; justify-content:center; z-index:300; padding:20px;
+  }
+  .modal-overlay.open{ display:flex; }
+  .modal{
+    width:100%; max-width:420px; max-height:88vh; overflow-y:auto;
+    background:var(--bg-panel-2); border:1px solid var(--line); border-radius:20px; padding:30px 28px 26px;
+    position:relative; animation: modal-in .25s ease;
+  }
+  @keyframes modal-in{ from{opacity:0; transform:translateY(14px) scale(0.97);} to{opacity:1; transform:none;} }
+  .modal h3{ font-family:var(--font-display); font-size:26px; letter-spacing:0.4px; margin-bottom:4px; }
+  .modal .modal-sub{ color:var(--text-low); font-size:12.5px; margin-bottom:20px; }
+  .modal .close-x{
+    position:absolute; top:16px; right:16px; width:30px; height:30px; border-radius:50%;
+    border:1px solid var(--line); background:none; color:var(--text-mid); cursor:pointer; font-size:15px;
+  }
+  .field{ margin-bottom:14px; }
+  .field label{ display:block; font-size:11.5px; font-weight:700; letter-spacing:0.6px; text-transform:uppercase; color:var(--text-low); margin-bottom:6px; }
+  .field input{
+    width:100%; padding:12px 14px; background:rgba(255,255,255,0.03); border:1px solid var(--line); border-radius:10px;
+    color:var(--text-hi); font-family:var(--font-body); font-size:14px; outline:none; transition:border-color .2s ease;
+  }
+  .field input:focus{ border-color:var(--cyan); }
+  .modal-error{
+    background:rgba(255,62,90,0.1); border:1px solid rgba(255,62,90,0.4); color:#ff7a8a; font-size:12.5px;
+    padding:10px 12px; border-radius:10px; margin-bottom:14px; display:none;
+  }
+  .modal-error.show{ display:block; }
+  .modal-success{
+    background:rgba(31,214,95,0.1); border:1px solid rgba(31,214,95,0.4); color:#5ef79b; font-size:13px;
+    padding:14px; border-radius:10px; text-align:center; display:none;
+  }
+  .modal-success.show{ display:block; }
+  .submit-btn{
+    width:100%; padding:13px; border:none; border-radius:10px;
+    background:linear-gradient(120deg, var(--cyan), var(--magenta)); color:#0a0912; font-weight:800; font-size:14px;
+    cursor:pointer; margin-top:6px; letter-spacing:0.4px;
+  }
+  .ghost-btn{
+    width:100%; padding:12px; border-radius:10px; border:1px solid var(--line); background:rgba(255,255,255,0.03);
+    color:var(--text-mid); font-weight:700; font-size:13px; cursor:pointer; margin-top:10px;
+  }
+  .ghost-btn:hover{ color:var(--text-hi); border-color:rgba(255,255,255,0.25); }
+
+  /* ---------- TABS (registro / login DJ) ---------- */
+  .tabs{ display:flex; gap:6px; background:rgba(255,255,255,0.03); border:1px solid var(--line); border-radius:10px; padding:4px; margin-bottom:20px; }
+  .tab-btn{
+    flex:1; padding:9px; border:none; border-radius:8px; background:none; color:var(--text-mid);
+    font-weight:700; font-size:12.5px; cursor:pointer; letter-spacing:0.3px;
+  }
+  .tab-btn.active{ background:linear-gradient(120deg, var(--blue), var(--blue-dark)); color:#fff; }
+
+  /* ---------- PANEL ADMIN: lista de DJs ---------- */
+  .dj-admin-list{ display:flex; flex-direction:column; gap:10px; margin-top:6px; }
+  .dj-admin-row{
+    display:flex; align-items:center; gap:10px; padding:12px; border:1px solid var(--line);
+    border-radius:12px; background:rgba(255,255,255,0.03);
+  }
+  .dj-admin-row .info{ flex:1; min-width:0; }
+  .dj-admin-row .nm{ font-weight:800; font-size:13.5px; }
+  .dj-admin-row .us{ font-size:11.5px; color:var(--text-low); font-family:var(--font-mono); }
+  .status-pill{
+    font-size:10px; font-family:var(--font-mono); letter-spacing:1px; padding:4px 9px; border-radius:999px; flex-shrink:0;
+  }
+  .status-pill.on{ background:rgba(31,214,95,0.15); color:#5ef79b; border:1px solid rgba(31,214,95,0.4); }
+  .status-pill.off{ background:rgba(255,62,90,0.12); color:#ff8a97; border:1px solid rgba(255,62,90,0.35); }
+  .toggle-dj-btn{
+    flex-shrink:0; padding:8px 12px; border-radius:8px; border:none; font-size:11.5px; font-weight:800; cursor:pointer;
+  }
+  .toggle-dj-btn.activate{ background:linear-gradient(120deg, var(--green), var(--green-dark)); color:#fff; }
+  .toggle-dj-btn.deactivate{ background:linear-gradient(120deg, #ff4444, #a11313); color:#fff; }
+  .empty-note{ text-align:center; color:var(--text-low); font-size:12.5px; padding:20px 0; }
+
+  /* ---------- SALA DEL OYENTE (player + transmisión + chat) ---------- */
+  .room{ grid-area:room; }
+  .listener-room{ padding:36px 40px 50px; border-bottom:1px solid var(--line); }
+  .listener-room .room-title{ font-family:var(--font-display); font-size:26px; margin-bottom:4px; }
+  .listener-room .room-sub{ color:var(--text-low); font-size:12.5px; font-family:var(--font-mono); margin-bottom:22px; }
+
   .dj-live-box{
-    position:relative;
-    width:100%;
-    max-width:520px;
-    aspect-ratio:16/9;
-    background:#05050a;
-    border:1px solid var(--line);
-    border-radius:14px;
-    overflow:hidden;
-    margin-bottom:18px;
+    position:relative; width:100%; max-width:560px; aspect-ratio:16/9; background:#05050a;
+    border:1px solid var(--line); border-radius:14px; overflow:hidden; margin-bottom:18px;
     display:flex; align-items:center; justify-content:center;
   }
   .dj-live-box video{ width:100%; height:100%; object-fit:cover; display:none; }
   .dj-live-box.active video{ display:block; }
   .dj-live-box.active .dj-live-placeholder{ display:none; }
   .dj-live-placeholder{
-    display:flex; flex-direction:column; align-items:center; gap:8px;
-    color:var(--text-low); font-size:12.5px; font-family:var(--font-mono);
-    text-align:center; padding:0 20px;
+    display:flex; flex-direction:column; align-items:center; gap:8px; color:var(--text-low); font-size:12.5px;
+    font-family:var(--font-mono); text-align:center; padding:0 20px;
   }
   .dj-live-placeholder .cam-ic{ font-size:26px; }
   .dj-live-badge{
-    position:absolute; top:10px; left:10px;
-    display:none; align-items:center; gap:6px;
-    background:rgba(0,0,0,0.55);
-    border:1px solid rgba(255,68,68,0.5);
-    color:#ff9d9d;
-    font-family:var(--font-mono); font-size:10.5px; letter-spacing:1.5px;
-    padding:5px 10px; border-radius:999px;
+    position:absolute; top:10px; left:10px; display:none; align-items:center; gap:6px; background:rgba(0,0,0,0.55);
+    border:1px solid rgba(255,68,68,0.5); color:#ff9d9d; font-family:var(--font-mono); font-size:10.5px;
+    letter-spacing:1.5px; padding:5px 10px; border-radius:999px;
   }
   .dj-live-box.active .dj-live-badge{ display:flex; }
   .dj-live-badge .r{ width:6px; height:6px; border-radius:50%; background:#ff4444; box-shadow:0 0 8px #ff4444; animation:pulse-dot 1.2s infinite; }
+  .fs-btn{
+    position:absolute; bottom:10px; right:10px; display:none; align-items:center; gap:5px;
+    background:rgba(0,0,0,0.55); border:1px solid var(--line); color:var(--text-hi); font-size:11px;
+    padding:6px 10px; border-radius:8px; cursor:pointer; font-family:var(--font-mono);
+  }
+  .dj-live-box.active .fs-btn{ display:flex; }
+
+  .player-controls-row{ display:flex; align-items:center; gap:20px; flex-wrap:wrap; margin-bottom:26px; }
   .play-btn{
-    width:54px; height:54px; border-radius:50%;
-    background:linear-gradient(145deg, var(--cyan), #00A88E);
-    border:none;
-    display:flex; align-items:center; justify-content:center;
-    cursor:pointer;
-    box-shadow:0 6px 20px rgba(0,229,199,0.35), inset 0 -3px 6px rgba(0,0,0,0.25);
-    flex-shrink:0;
-    transition: transform .15s ease;
+    width:54px; height:54px; border-radius:50%; background:linear-gradient(145deg, var(--cyan), #00A88E); border:none;
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+    box-shadow:0 6px 20px rgba(0,229,199,0.35), inset 0 -3px 6px rgba(0,0,0,0.25); flex-shrink:0; transition: transform .15s ease;
   }
   .play-btn:active{ transform:scale(0.92); }
   .play-btn svg{ width:20px; height:20px; fill:#04231d; }
   .player-info{ flex:1; min-width:180px; }
   .player-info .track{ font-weight:800; font-size:15px; }
   .player-info .meta{ color:var(--text-low); font-size:12px; font-family:var(--font-mono); margin-top:2px; }
-  .bars{
-    display:flex; align-items:flex-end; gap:3px; height:26px; flex-shrink:0;
-  }
-  .bars span{
-    width:3px; background:var(--magenta); border-radius:2px;
-    animation:barbeat 0.9s ease-in-out infinite;
-  }
+  .bars{ display:flex; align-items:flex-end; gap:3px; height:26px; flex-shrink:0; }
+  .bars span{ width:3px; background:var(--magenta); border-radius:2px; animation:barbeat 0.9s ease-in-out infinite; }
   .bars span:nth-child(1){height:40%; animation-delay:0s;}
   .bars span:nth-child(2){height:80%; animation-delay:.12s;}
   .bars span:nth-child(3){height:55%; animation-delay:.24s;}
@@ -315,404 +311,54 @@
   .bars span:nth-child(5){height:30%; animation-delay:.3s;}
   @keyframes barbeat{ 0%,100%{transform:scaleY(0.4);} 50%{transform:scaleY(1);} }
   .listeners{
-    display:flex; align-items:center; gap:8px;
-    font-family:var(--font-mono); font-size:12px; color:var(--text-mid);
-    background:rgba(255,255,255,0.04);
-    padding:8px 14px; border-radius:999px;
-    border:1px solid var(--line);
-    flex-shrink:0;
+    display:flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:12px; color:var(--text-mid);
+    background:rgba(255,255,255,0.04); padding:8px 14px; border-radius:999px; border:1px solid var(--line); flex-shrink:0;
   }
   .listeners .lg{ width:7px; height:7px; border-radius:50%; background:var(--green); box-shadow:0 0 8px var(--green); }
   .volume{ display:flex; align-items:center; gap:8px; flex-shrink:0; }
   .volume input[type=range]{ width:90px; accent-color:var(--cyan); }
 
-  /* ---------- LOCKED STATE (player & chat, hasta modo oyente) ---------- */
-  .player, .chat-zone{ position:relative; }
-  .player .player-content,
-  .chat-zone .chat-content{ display:flex; }
-  .player .player-content{ flex-direction:column; width:100%; }
-  .chat-zone .chat-content{ flex-direction:column; flex:1; width:100%; }
-  .player.locked .player-content,
-  .chat-zone.locked .chat-content{ display:none; }
-  .locked-placeholder{
-    display:none;
-    width:100%;
-    align-items:center;
-    gap:16px;
-    padding:6px 4px;
-  }
-  .chat-zone .locked-placeholder{ flex-direction:column; text-align:center; padding:30px 10px; gap:10px; }
-  .player.locked .locked-placeholder,
-  .chat-zone.locked .locked-placeholder{ display:flex; }
-  .lock-ic{ font-size:26px; filter:drop-shadow(0 4px 4px rgba(0,0,0,0.4)); flex-shrink:0; }
-  .locked-text{ flex:1; }
-  .locked-title{ font-weight:800; font-size:14.5px; color:var(--text-hi); }
-  .locked-sub{ font-size:12px; color:var(--text-low); margin-top:2px; line-height:1.5; }
-  .locked-btn{
-    flex-shrink:0;
-    padding:10px 18px;
-    border:none; border-radius:999px;
-    background:linear-gradient(120deg, var(--green), var(--green-dark));
-    color:#fff; font-weight:800; font-size:12.5px;
-    letter-spacing:0.3px;
-    cursor:pointer;
-    white-space:nowrap;
-  }
-  @media (max-width:600px){
-    .locked-placeholder{ flex-wrap:wrap; }
-    .locked-btn{ width:100%; }
-  }
-
-  /* ---------- ACCESS BUTTONS ---------- */
-  .access{
-    grid-area:access;
-    padding:64px 40px 70px;
-    text-align:center;
-    border-bottom:1px solid var(--line);
-    background:
-      radial-gradient(ellipse at 50% 0%, rgba(0,229,199,0.08), transparent 55%),
-      var(--bg-deep);
-  }
-  .access .eyebrow{
-    font-family:var(--font-mono);
-    font-size:11px; letter-spacing:3px; text-transform:uppercase;
-    color:var(--text-low); margin-bottom:10px;
-  }
-  .access h2{
-    font-family:var(--font-display);
-    font-size:34px; letter-spacing:0.5px; margin-bottom:36px;
-  }
-  .access-grid{
-    display:flex; gap:22px; justify-content:center; flex-wrap:wrap;
-    max-width:960px; margin:0 auto;
-  }
-  .access-btn{
-    position:relative;
-    width:270px; min-height:150px;
-    border-radius:18px;
-    border:1px solid var(--line);
-    cursor:pointer;
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:14px;
-    font-family:var(--font-body);
-    color:#fff;
-    overflow:hidden;
-    transition: transform .22s ease, box-shadow .22s ease;
-  }
-  .access-btn:hover{ transform:translateY(-6px); }
-  .access-btn .btn-label{ font-size:16px; font-weight:800; letter-spacing:0.4px; }
-  .access-btn .btn-sub{ font-size:11.5px; color:rgba(255,255,255,0.75); font-family:var(--font-mono); letter-spacing:0.5px; }
-
-  .btn-oyente{ background:linear-gradient(160deg, var(--green), var(--green-dark)); }
-  .btn-oyente:hover{ box-shadow:0 14px 34px rgba(31,214,95,0.35); }
-
-  .btn-dj{ background:linear-gradient(160deg, var(--blue), var(--blue-dark)); }
-  .btn-dj:hover{ box-shadow:0 14px 34px rgba(45,124,255,0.4); }
-
-  .btn-admin{ background:linear-gradient(160deg, #1b1a26, var(--black-btn)); border-color:rgba(255,255,255,0.14); }
-  .btn-admin:hover{ box-shadow:0 14px 34px rgba(0,0,0,0.55); }
-
-  /* 3D-ish headphone icon */
-  .icon-headphone{ width:46px; height:46px; filter:drop-shadow(0 6px 8px rgba(0,0,0,0.35)); }
-  .icon-admin{ width:42px; height:42px; filter:drop-shadow(0 6px 8px rgba(0,0,0,0.4)); }
-  .icon-oyente{ width:42px; height:42px; filter:drop-shadow(0 6px 8px rgba(0,0,0,0.3)); }
-
-  /* ---------- MODAL ---------- */
-  .modal-overlay{
-    position:fixed; inset:0; background:rgba(6,5,12,0.75);
-    backdrop-filter: blur(6px);
-    display:none; align-items:center; justify-content:center;
-    z-index:200; padding:20px;
-  }
-  .modal-overlay.open{ display:flex; }
-  .modal{
-    width:100%; max-width:420px;
-    background:var(--bg-panel-2);
-    border:1px solid var(--line);
-    border-radius:20px;
-    padding:30px 28px 26px;
-    position:relative;
-    animation: modal-in .25s ease;
-  }
-  @keyframes modal-in{ from{opacity:0; transform:translateY(14px) scale(0.97);} to{opacity:1; transform:none;} }
-  .modal h3{ font-family:var(--font-display); font-size:26px; letter-spacing:0.4px; margin-bottom:4px; }
-  .modal .modal-sub{ color:var(--text-low); font-size:12.5px; margin-bottom:22px; }
-  .modal .close-x{
-    position:absolute; top:16px; right:16px;
-    width:30px; height:30px; border-radius:50%;
-    border:1px solid var(--line); background:none; color:var(--text-mid);
-    cursor:pointer; font-size:15px;
-  }
-  .field{ margin-bottom:14px; }
-  .field label{ display:block; font-size:11.5px; font-weight:700; letter-spacing:0.6px; text-transform:uppercase; color:var(--text-low); margin-bottom:6px; }
-  .field input{
-    width:100%; padding:12px 14px;
-    background:rgba(255,255,255,0.03);
-    border:1px solid var(--line);
-    border-radius:10px;
-    color:var(--text-hi);
-    font-family:var(--font-body);
-    font-size:14px;
-    outline:none;
-    transition:border-color .2s ease;
-  }
-  .field input:focus{ border-color:var(--cyan); }
-  .modal-error{
-    background:rgba(255,62,90,0.1);
-    border:1px solid rgba(255,62,90,0.4);
-    color:#ff7a8a;
-    font-size:12.5px;
-    padding:10px 12px;
-    border-radius:10px;
-    margin-bottom:14px;
-    display:none;
-  }
-  .modal-error.show{ display:block; }
-  .modal-success{
-    background:rgba(31,214,95,0.1);
-    border:1px solid rgba(31,214,95,0.4);
-    color:#5ef79b;
-    font-size:13px;
-    padding:14px;
-    border-radius:10px;
-    text-align:center;
-    display:none;
-  }
-  .modal-success.show{ display:block; }
-  .submit-btn{
-    width:100%; padding:13px;
-    border:none; border-radius:10px;
-    background:linear-gradient(120deg, var(--cyan), var(--magenta));
-    color:#0a0912; font-weight:800; font-size:14px;
-    cursor:pointer; margin-top:6px;
-    letter-spacing:0.4px;
-  }
-  .simple-modal-msg{ color:var(--text-mid); font-size:14px; line-height:1.6; }
-
-  /* ---------- DJ LIVE CAMERA ---------- */
-  .modal-dj{ max-width:460px; }
-  .live-cam-box{
-    position:relative;
-    margin-top:18px;
-    width:100%;
-    aspect-ratio: 16/10;
-    background:#05050a;
-    border:1px solid var(--line);
-    border-radius:14px;
-    overflow:hidden;
-    display:flex; align-items:center; justify-content:center;
-  }
-  .live-cam-box video{
-    width:100%; height:100%; object-fit:cover;
-    display:none;
-  }
-  .live-cam-box.active video{ display:block; }
-  .live-cam-box.active .live-cam-placeholder{ display:none; }
-  .live-cam-placeholder{
-    display:flex; flex-direction:column; align-items:center; gap:8px;
-    color:var(--text-low); font-size:12.5px; font-family:var(--font-mono);
-  }
-  .live-cam-placeholder .cam-ic{ font-size:28px; filter:drop-shadow(0 4px 4px rgba(0,0,0,0.4)); }
-  .live-cam-badge{
-    position:absolute; top:10px; left:10px;
-    display:none; align-items:center; gap:6px;
-    background:rgba(0,0,0,0.55);
-    border:1px solid rgba(255,68,68,0.5);
-    color:#ff9d9d;
-    font-family:var(--font-mono); font-size:10.5px; letter-spacing:1.5px;
-    padding:5px 10px; border-radius:999px;
-  }
-  .live-cam-box.active .live-cam-badge{ display:flex; }
-  .live-cam-badge .r{ width:6px; height:6px; border-radius:50%; background:#ff4444; box-shadow:0 0 8px #ff4444; animation:pulse-dot 1.2s infinite; }
-
-  .mic-badge{
-    position:absolute; top:10px; right:10px;
-    display:none; align-items:center; gap:6px;
-    background:rgba(0,0,0,0.55);
-    border:1px solid rgba(45,124,255,0.5);
-    color:#a9c9ff;
-    font-family:var(--font-mono); font-size:10.5px; letter-spacing:1.2px;
-    padding:5px 10px; border-radius:999px;
-  }
-  .mic-badge.on{ display:flex; }
-
-  /* ---------- CHAT SOBREPUESTO EN LA TRANSMISIÓN DEL DJ ---------- */
-  .cam-chat-overlay{
-    position:absolute; inset:0;
-    pointer-events:none;
-    display:none;
-    overflow:hidden;
-  }
-  .live-cam-box.active .cam-chat-overlay{ display:block; }
-  .cam-chat-stream{
-    position:absolute;
-    left:10px; right:10px; bottom:8px;
-    height:78%;
-  }
-  .cam-chat-stream .chat-msg{
-    position:absolute;
-    left:0; bottom:0;
-    font-weight:700;
-    font-size:12.5px;
-    line-height:1.35;
-    background:none;
-    text-shadow: 0 1px 6px rgba(0,0,0,0.95), 0 0 3px rgba(0,0,0,0.9);
-    animation: chat-rise-cam 5.5s linear forwards;
-    max-width:88%;
-  }
-  .cam-chat-stream .chat-msg b{ font-weight:800; margin-right:5px; }
-  @keyframes chat-rise-cam{
-    0%{ transform:translateY(16px); opacity:0; }
-    10%{ opacity:1; transform:translateY(0); }
-    78%{ opacity:1; }
-    100%{ transform:translateY(-150px); opacity:0; }
-  }
-  .cam-emoji-layer{ position:absolute; inset:0; overflow:visible; }
-  .cam-emoji-layer .emoji3d{ font-size:20px; }
-
-  .cam-error{
-    display:none;
-    background:rgba(255,62,90,0.1);
-    border:1px solid rgba(255,62,90,0.4);
-    color:#ff7a8a;
-    font-size:12px;
-    padding:9px 12px;
-    border-radius:10px;
-    margin-top:10px;
-  }
-  .cam-error.show{ display:block; }
-
-  .live-btn{
-    width:100%; margin-top:14px;
-    padding:13px;
-    border:none; border-radius:10px;
-    background:linear-gradient(120deg, var(--blue), #1450B8);
-    color:#fff; font-weight:800; font-size:13.5px;
-    letter-spacing:0.3px;
-    cursor:pointer;
-    display:flex; align-items:center; justify-content:center; gap:8px;
-  }
-  .live-btn.stop{ background:linear-gradient(120deg, #ff4444, #a11313); }
-  .live-btn .ic{ font-size:16px; }
-
-  /* ---------- TOGGLES CÁMARA / MICRÓFONO ---------- */
-  .device-toggles{
-    display:flex; gap:10px; margin-top:14px;
-  }
-  .toggle-btn{
-    flex:1;
-    padding:12px 10px;
-    border-radius:10px;
-    border:1px solid var(--line);
-    background:rgba(255,255,255,0.04);
-    color:var(--text-mid);
-    font-weight:800; font-size:12.5px;
-    letter-spacing:0.2px;
-    cursor:pointer;
-    display:flex; align-items:center; justify-content:center; gap:7px;
-    transition: all .2s ease;
-  }
-  .toggle-btn .ic{ font-size:15px; }
-  .toggle-btn:hover{ border-color:rgba(255,255,255,0.25); color:var(--text-hi); }
-  .toggle-btn.cam.on{
-    background:linear-gradient(120deg, var(--blue), #1450B8);
-    border-color:transparent; color:#fff;
-  }
-  .toggle-btn.mic.on{
-    background:linear-gradient(120deg, var(--green), var(--green-dark));
-    border-color:transparent; color:#fff;
-  }
-  .toggle-btn.denied{
-    border-color:rgba(255,62,90,0.5);
-    color:#ff8a97;
-  }
-
-  /* ---------- CHAT FOOTER ---------- */
-  .chat-zone{
-    grid-area:chat;
-    position:relative;
-    min-height:340px;
-    padding:30px 20px 20px;
+  /* ---------- CHAT (dentro de la sala del oyente) ---------- */
+  .chat-block{
+    position:relative; min-height:300px; border-radius:16px; overflow:hidden; border:1px solid var(--line);
     background:
       linear-gradient(180deg, transparent, rgba(0,0,0,0.35) 90%),
       repeating-linear-gradient(135deg, rgba(255,255,255,0.015) 0 2px, transparent 2px 26px),
-      var(--bg-deep);
-    border-top:1px solid var(--line);
-    overflow:hidden;
-    display:flex; flex-direction:column;
+      var(--bg-panel);
+    padding:20px 18px 18px; display:flex; flex-direction:column;
   }
-  .chat-bg-video{
-    position:absolute; inset:0;
-    width:100%; height:100%;
-    object-fit:cover;
-    z-index:0;
-    display:none;
-  }
-  .chat-zone.dj-live-bg .chat-bg-video{ display:block; }
-  .chat-bg-overlay{
-    position:absolute; inset:0;
-    background:linear-gradient(180deg, rgba(6,5,12,0.35), rgba(6,5,12,0.82) 75%);
-    z-index:1;
-    display:none;
-  }
-  .chat-zone.dj-live-bg .chat-bg-overlay{ display:block; }
-  .chat-zone .chat-title,
-  .chat-zone .chat-content{ position:relative; z-index:2; }
-  .chat-live-tag{
-    display:none;
-    align-items:center; gap:6px;
-    font-family:var(--font-mono); font-size:10px; letter-spacing:1.5px;
-    color:#ff9d9d;
-    background:rgba(0,0,0,0.5);
-    border:1px solid rgba(255,68,68,0.5);
-    padding:4px 10px; border-radius:999px;
-    margin-left:auto;
-  }
-  .chat-zone.dj-live-bg .chat-live-tag{ display:flex; }
-  .chat-live-tag .r{ width:6px; height:6px; border-radius:50%; background:#ff4444; box-shadow:0 0 8px #ff4444; animation:pulse-dot 1.2s infinite; }
-  .chat-zone .chat-title{
-    font-family:var(--font-mono);
-    font-size:11px; letter-spacing:2px; text-transform:uppercase;
-    color:var(--text-low);
-    margin-bottom:12px;
-    display:flex; align-items:center; gap:8px;
+  .chat-bg-video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; display:none; }
+  .chat-block.dj-live-bg .chat-bg-video{ display:block; }
+  .chat-bg-overlay{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(6,5,12,0.35), rgba(6,5,12,0.82) 75%); z-index:1; display:none; }
+  .chat-block.dj-live-bg .chat-bg-overlay{ display:block; }
+  .chat-block > *:not(.chat-bg-video):not(.chat-bg-overlay){ position:relative; z-index:2; }
+  .chat-title{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--text-low);
+    margin-bottom:12px; display:flex; align-items:center; gap:8px;
   }
   .chat-title .lg{ width:6px; height:6px; border-radius:50%; background:var(--magenta); box-shadow:0 0 8px var(--magenta); }
-
-  .chat-stream{
-    flex:1; position:relative; min-height:220px;
-    max-width:520px;
+  .chat-live-tag{
+    display:none; align-items:center; gap:6px; font-family:var(--font-mono); font-size:10px; letter-spacing:1.5px;
+    color:#ff9d9d; background:rgba(0,0,0,0.5); border:1px solid rgba(255,68,68,0.5); padding:4px 10px; border-radius:999px; margin-left:auto;
   }
+  .chat-block.dj-live-bg .chat-live-tag{ display:flex; }
+  .chat-live-tag .r{ width:6px; height:6px; border-radius:50%; background:#ff4444; box-shadow:0 0 8px #ff4444; animation:pulse-dot 1.2s infinite; }
+  .chat-stream{ flex:1; position:relative; min-height:200px; max-width:520px; }
   .chat-msg{
-    position:absolute;
-    bottom:0;
-    left:0;
-    font-weight:700;
-    font-size:14.5px;
-    line-height:1.4;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.9), 0 0 2px rgba(0,0,0,0.8);
-    background:none;
-    pointer-events:none;
-    animation: chat-rise 6.5s linear forwards;
-    max-width:480px;
+    position:absolute; bottom:0; left:0; font-weight:700; font-size:14.5px; line-height:1.4;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.9), 0 0 2px rgba(0,0,0,0.8); background:none; pointer-events:none;
+    animation: chat-rise 6.5s linear forwards; max-width:480px;
   }
   .chat-msg b{ font-weight:800; margin-right:6px; }
   @keyframes chat-rise{
-    0%{ transform:translateY(20px); opacity:0; }
-    8%{ opacity:1; transform:translateY(0); }
-    80%{ opacity:1; }
-    100%{ transform:translateY(-260px); opacity:0; }
+    0%{ transform:translateY(20px); opacity:0; } 8%{ opacity:1; transform:translateY(0); }
+    80%{ opacity:1; } 100%{ transform:translateY(-260px); opacity:0; }
   }
-
-  .emoji-layer{
-    position:absolute; inset:0; pointer-events:none; overflow:visible;
-  }
+  .emoji-layer{ position:absolute; inset:0; pointer-events:none; overflow:visible; }
   .emoji3d{
-    position:absolute;
-    font-size:30px;
+    position:absolute; font-size:30px;
     filter: drop-shadow(0 6px 5px rgba(0,0,0,0.55)) drop-shadow(0 0 10px rgba(255,255,255,0.08));
-    animation: float-emoji 3.4s ease-in forwards;
-    will-change: transform, opacity;
+    animation: float-emoji 3.4s ease-in forwards; will-change: transform, opacity;
   }
   @keyframes float-emoji{
     0%{ transform:translateY(0) scale(0.6) rotate(0deg); opacity:0; }
@@ -720,40 +366,93 @@
     50%{ transform:translateY(-140px) scale(1) rotate(8deg); }
     100%{ transform:translateY(-300px) scale(0.85) rotate(-4deg); opacity:0; }
   }
-
-  .chat-input-row{
-    display:flex; gap:10px; margin-top:16px;
-    max-width:520px;
-  }
+  .chat-input-row{ display:flex; gap:10px; margin-top:16px; max-width:520px; }
   .chat-input-row input{
-    flex:1; padding:12px 16px;
-    background:rgba(255,255,255,0.05);
-    border:1px solid var(--line);
-    border-radius:999px;
-    color:var(--text-hi);
-    font-size:13.5px;
-    outline:none;
+    flex:1; padding:12px 16px; background:rgba(255,255,255,0.05); border:1px solid var(--line); border-radius:999px;
+    color:var(--text-hi); font-size:13.5px; outline:none;
   }
   .chat-input-row input:focus{ border-color:var(--magenta); }
   .chat-input-row button{
-    width:44px; height:44px; border-radius:50%;
-    border:none; cursor:pointer;
-    background:linear-gradient(140deg, var(--magenta), #b5216c);
-    color:#fff; font-size:17px;
-    flex-shrink:0;
+    width:44px; height:44px; border-radius:50%; border:none; cursor:pointer;
+    background:linear-gradient(140deg, var(--magenta), #b5216c); color:#fff; font-size:17px; flex-shrink:0;
   }
-  .emoji-picks{
-    display:flex; gap:8px; margin-top:12px;
-  }
+  .emoji-picks{ display:flex; gap:8px; margin-top:12px; }
   .emoji-picks button{
-    width:38px; height:38px; border-radius:50%;
-    border:1px solid var(--line);
-    background:rgba(255,255,255,0.04);
-    font-size:18px; cursor:pointer;
-    filter: drop-shadow(0 3px 3px rgba(0,0,0,0.4));
-    transition: transform .15s ease;
+    width:38px; height:38px; border-radius:50%; border:1px solid var(--line); background:rgba(255,255,255,0.04);
+    font-size:18px; cursor:pointer; filter: drop-shadow(0 3px 3px rgba(0,0,0,0.4)); transition: transform .15s ease;
   }
   .emoji-picks button:hover{ transform:translateY(-3px) scale(1.08); }
+
+  /* ---------- ESTUDIO DEL DJ ---------- */
+  .dj-studio{ grid-area:room; }
+  .studio-banner{
+    padding:40px 40px 34px; border-bottom:1px solid var(--line);
+    background: radial-gradient(ellipse at 20% 0%, rgba(45,124,255,0.14), transparent 55%), var(--bg-panel);
+    display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;
+  }
+  .studio-banner .st-title{ font-family:var(--font-display); font-size:32px; letter-spacing:0.4px; }
+  .studio-banner .st-sub{ color:var(--text-mid); font-size:13px; margin-top:4px; }
+  .go-live-btn{
+    padding:16px 30px; border:none; border-radius:14px; cursor:pointer; font-weight:800; font-size:15px;
+    letter-spacing:0.4px; display:flex; align-items:center; gap:10px; flex-shrink:0;
+    background:linear-gradient(120deg, #ff4444, #a11313); color:#fff;
+    box-shadow:0 10px 26px rgba(255,68,68,0.35);
+  }
+  .go-live-btn.live{ background:linear-gradient(120deg, #444, #1a1a1a); box-shadow:none; }
+  .go-live-btn .dot-rec{ width:10px; height:10px; border-radius:50%; background:#fff; }
+  .go-live-btn.live .dot-rec{ background:#ff4444; animation:pulse-dot 1s infinite; }
+
+  .studio-body{ padding:34px 40px 50px; }
+  .studio-preview{
+    position:relative; width:100%; max-width:560px; aspect-ratio:16/9; background:#05050a; border:1px solid var(--line);
+    border-radius:16px; overflow:hidden; display:flex; align-items:center; justify-content:center;
+  }
+  .studio-preview video{ width:100%; height:100%; object-fit:cover; display:none; }
+  .studio-preview.active video{ display:block; }
+  .studio-preview.active .studio-preview-placeholder{ display:none; }
+  .studio-preview-placeholder{ color:var(--text-low); font-family:var(--font-mono); font-size:13px; text-align:center; padding:0 20px; }
+  .studio-error{
+    max-width:560px; margin-top:12px; background:rgba(255,62,90,0.1); border:1px solid rgba(255,62,90,0.4);
+    color:#ff7a8a; font-size:12.5px; padding:10px 12px; border-radius:10px; display:none;
+  }
+  .studio-error.show{ display:block; }
+
+  /* ---------- TRANSMISIÓN EN PANTALLA COMPLETA (con chat encima) ---------- */
+  .fs-live{
+    position:fixed; inset:0; background:#000; z-index:1000; display:none;
+    align-items:flex-end; justify-content:center;
+  }
+  .fs-live.on{ display:flex; }
+  .fs-live video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .fs-live .fs-overlay-grad{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,0.35) 0%, transparent 30%, rgba(0,0,0,0.55) 100%); }
+  .fs-live .fs-top-bar{
+    position:absolute; top:0; left:0; right:0; display:flex; align-items:center; justify-content:space-between;
+    padding:18px 22px; z-index:5;
+  }
+  .fs-live .fs-badge{
+    display:flex; align-items:center; gap:7px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,68,68,0.5);
+    color:#ff9d9d; font-family:var(--font-mono); font-size:11px; letter-spacing:1.5px; padding:7px 13px; border-radius:999px;
+  }
+  .fs-live .fs-badge .r{ width:7px; height:7px; border-radius:50%; background:#ff4444; box-shadow:0 0 8px #ff4444; animation:pulse-dot 1s infinite; }
+  .fs-controls{ display:flex; gap:10px; }
+  .fs-controls button{
+    background:rgba(0,0,0,0.5); border:1px solid var(--line); color:var(--text-hi); font-size:12px; font-weight:700;
+    padding:9px 14px; border-radius:999px; cursor:pointer; font-family:var(--font-body);
+  }
+  .fs-controls button.end{ background:rgba(255,68,68,0.85); border-color:transparent; }
+  .fs-live .fs-chat-zone{ position:relative; z-index:5; width:100%; max-width:560px; padding:0 24px 26px; }
+  .fs-live .fs-chat-stream{ position:relative; height:260px; }
+  .fs-live .fs-chat-stream .chat-msg{ font-size:15px; }
+  .fs-live .fs-emoji-layer{ position:absolute; inset:0; pointer-events:none; }
+  .fs-live .fs-chat-input-row{ display:flex; gap:10px; margin-top:10px; }
+  .fs-live .fs-chat-input-row input{
+    flex:1; padding:12px 16px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:999px;
+    color:#fff; font-size:13.5px; outline:none;
+  }
+  .fs-live .fs-chat-input-row button{
+    width:44px; height:44px; border-radius:50%; border:none; cursor:pointer;
+    background:linear-gradient(140deg, var(--magenta), #b5216c); color:#fff; font-size:17px; flex-shrink:0;
+  }
 
   footer.copy{
     text-align:center; padding:18px; color:var(--text-low); font-size:11.5px;
@@ -770,11 +469,10 @@
     <div class="logo"><span class="dot"></span> FRECUENCIA&nbsp;NOCTURNA</div>
     <button class="menu-toggle" id="menuToggle">☰</button>
     <nav class="main-menu" id="mainMenu">
-      <a href="#inicio">Inicio</a>
-      <a href="#banner">En vivo</a>
-      <a href="#programacion">Programación</a>
-      <a href="#comunidad">Comunidad</a>
-      <a href="#contacto">Contacto</a>
+      <a data-scroll="inicio">Inicio</a>
+      <a data-scroll="banner">En vivo</a>
+      <a data-scroll="acceso">Acceder</a>
+      <a data-scroll="room">Mi sala</a>
     </nav>
   </header>
 
@@ -782,12 +480,11 @@
   <aside class="submenu">
     <div class="sm-title">Explorar</div>
     <ul>
-      <li><a class="active" href="#banner"><span class="ic">📻</span> En vivo ahora</a></li>
-      <li><a href="#programacion"><span class="ic">🗓️</span> Programación</a></li>
-      <li><a href="#djs"><span class="ic">🎚️</span> Nuestros DJs</a></li>
-      <li><a href="#top"><span class="ic">📈</span> Top canciones</a></li>
-      <li><a href="#podcasts"><span class="ic">🎙️</span> Podcasts</a></li>
-      <li><a href="#comunidad"><span class="ic">💬</span> Comunidad</a></li>
+      <li><a class="active" data-scroll="banner"><span class="ic">📻</span> En vivo ahora</a></li>
+      <li><a data-scroll="acceso"><span class="ic">🔑</span> Acceder</a></li>
+      <li><a data-scroll="room"><span class="ic">🎧</span> Mi sala</a></li>
+      <li><a id="submenuDjLink" data-scroll="acceso"><span class="ic">🎚️</span> Soy DJ</a></li>
+      <li><a data-scroll="acceso"><span class="ic">🛠️</span> Administración</a></li>
     </ul>
   </aside>
 
@@ -799,55 +496,14 @@
     <div class="waveform" id="waveform"></div>
   </section>
 
-  <!-- PLAYER -->
-  <section class="player locked" id="playerSection">
-    <div class="locked-placeholder">
-      <span class="lock-ic">🔒</span>
-      <div class="locked-text">
-        <div class="locked-title">Reproductor bloqueado</div>
-        <div class="locked-sub">Ingresa en modo oyente para escuchar la transmisión en vivo.</div>
-      </div>
-      <button class="locked-btn" id="playerOpenOyente">Ingresar como oyente</button>
-    </div>
-    <div class="player-content">
-      <div class="dj-live-box" id="djLiveBox">
-        <video id="listenerDjVideo" autoplay playsinline></video>
-        <div class="dj-live-placeholder" id="djLivePlaceholder">
-          <span class="cam-ic">📡</span>
-          <span>Ningún DJ está transmitiendo video en este momento</span>
-        </div>
-        <div class="dj-live-badge" id="djLiveViewBadge"><span class="r"></span> DJ EN VIVO</div>
-      </div>
-      <div class="player-controls-row">
-        <audio id="radioAudio" preload="none" src="http://node-19.zeno.fm:80/0swxrk8k8mzuv.acc"></audio>
-        <button class="play-btn" id="playBtn" aria-label="Reproducir">
-          <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-        </button>
-        <div class="player-info">
-          <div class="track" id="trackName">Set en vivo — DJ Nocturno</div>
-          <div class="meta" id="trackMeta">STREAM · ○ Presiona play para escuchar</div>
-        </div>
-        <div class="bars"><span></span><span></span><span></span><span></span><span></span></div>
-        <div class="listeners"><span class="lg"></span> <span id="listenerCount">312</span> oyentes conectados</div>
-        <div class="volume">
-          🔈 <input type="range" min="0" max="100" value="70" id="volSlider">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ACCESO -->
-  <section class="access" id="inicio">
+  <!-- ACCESO (PÁGINA PRINCIPAL) -->
+  <section class="access" id="acceso">
     <div class="logo" style="justify-content:center; margin-bottom:22px;"><span class="dot"></span> FRECUENCIA&nbsp;NOCTURNA</div>
     <div class="eyebrow">Bienvenido</div>
     <h2>Elige cómo quieres entrar</h2>
     <div class="access-grid">
       <button class="access-btn btn-oyente" id="btnOyente">
         <svg class="icon-oyente" viewBox="0 0 64 64">
-          <defs><linearGradient id="gOy" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#eafff2"/><stop offset="1" stop-color="#bdf5cf"/>
-          </linearGradient></defs>
-          <circle cx="32" cy="32" r="26" fill="url(#gOy)" opacity="0.18"/>
           <path fill="#eafff2" d="M32 10c-8 0-14 6-14 14v10a4 4 0 004 4h2V26a8 8 0 0116 0v12h2a4 4 0 004-4V24c0-8-6-14-14-14z"/>
           <circle cx="20" cy="38" r="5" fill="#eafff2"/>
           <circle cx="44" cy="38" r="5" fill="#eafff2"/>
@@ -859,21 +515,18 @@
       <button class="access-btn btn-dj" id="btnDj">
         <svg class="icon-headphone" viewBox="0 0 64 64">
           <defs>
-            <linearGradient id="gDj" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#eaf3ff"/><stop offset="1" stop-color="#9dc4ff"/>
-            </linearGradient>
             <linearGradient id="gDjCup" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#bcd9ff"/>
             </linearGradient>
           </defs>
-          <path d="M12 34c0-12 9-21 20-21s20 9 20 21" stroke="url(#gDj)" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <path d="M12 34c0-12 9-21 20-21s20 9 20 21" stroke="#eaf3ff" stroke-width="5" fill="none" stroke-linecap="round"/>
           <rect x="8" y="32" width="11" height="18" rx="5" fill="url(#gDjCup)"/>
           <rect x="45" y="32" width="11" height="18" rx="5" fill="url(#gDjCup)"/>
           <rect x="10" y="35" width="7" height="12" rx="3.5" fill="#3f7be0"/>
           <rect x="47" y="35" width="7" height="12" rx="3.5" fill="#3f7be0"/>
         </svg>
         <span class="btn-label">Ingreso como DJ</span>
-        <span class="btn-sub">PANEL DE TRANSMISIÓN</span>
+        <span class="btn-sub">REGISTRO / INGRESO</span>
       </button>
 
       <button class="access-btn btn-admin" id="btnAdmin">
@@ -891,70 +544,119 @@
     </div>
   </section>
 
-  <!-- CHAT -->
-  <section class="chat-zone locked" id="comunidad">
-    <video class="chat-bg-video" id="chatBgVideo" autoplay playsinline muted></video>
-    <div class="chat-bg-overlay"></div>
-    <div class="locked-placeholder">
-      <span class="lock-ic">🔒</span>
-      <div class="locked-text">
-        <div class="locked-title">Chat bloqueado</div>
-        <div class="locked-sub">Actívalo para ver y participar en el chat en vivo.</div>
+  <!-- SALA DEL OYENTE (oculta hasta que ingresa con apodo) -->
+  <div class="room" id="room">
+    <section class="listener-room hidden" id="listenerRoom">
+      <div class="room-title">Tu sala de escucha</div>
+      <div class="room-sub" id="roomWelcome">CONECTADO COMO OYENTE</div>
+
+      <div class="dj-live-box" id="djLiveBox">
+        <video id="listenerDjVideo" autoplay playsinline></video>
+        <div class="dj-live-placeholder" id="djLivePlaceholder">
+          <span class="cam-ic">📡</span>
+          <span>Ningún DJ está transmitiendo video en este momento</span>
+        </div>
+        <div class="dj-live-badge" id="djLiveViewBadge"><span class="r"></span> DJ EN VIVO</div>
+        <button class="fs-btn" id="listenerFsBtn">⛶ Pantalla completa</button>
       </div>
-      <button class="locked-btn" id="chatOpenBtn">Ver chat en vivo</button>
-    </div>
-    <div class="chat-content">
-      <div class="chat-title"><span class="lg"></span> CHAT EN VIVO <span class="chat-live-tag" id="chatLiveTag"><span class="r"></span> DJ TRANSMITIENDO</span></div>
-      <div class="chat-stream" id="chatStream">
-        <div class="emoji-layer" id="emojiLayer"></div>
+
+      <div class="player-controls-row">
+        <audio id="radioAudio" preload="none" src="http://node-19.zeno.fm:80/0swxrk8k8mzuv.acc"></audio>
+        <button class="play-btn" id="playBtn" aria-label="Reproducir">
+          <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <div class="player-info">
+          <div class="track" id="trackName">Set en vivo — DJ Nocturno</div>
+          <div class="meta" id="trackMeta">STREAM · ○ Presiona play para escuchar</div>
+        </div>
+        <div class="bars"><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="listeners"><span class="lg"></span> <span id="listenerCount">312</span> oyentes conectados</div>
+        <div class="volume">🔈 <input type="range" min="0" max="100" value="70" id="volSlider"></div>
       </div>
-      <div class="chat-input-row">
-        <input type="text" id="chatInput" placeholder="Escribe algo a la comunidad…" maxlength="120">
-        <button id="chatSend" aria-label="Enviar">➤</button>
+
+      <div class="chat-block" id="chatBlock">
+        <video class="chat-bg-video" id="chatBgVideo" autoplay playsinline muted></video>
+        <div class="chat-bg-overlay"></div>
+        <div class="chat-title"><span class="lg"></span> CHAT EN VIVO <span class="chat-live-tag" id="chatLiveTag"><span class="r"></span> DJ TRANSMITIENDO</span></div>
+        <div class="chat-stream" id="chatStream">
+          <div class="emoji-layer" id="emojiLayer"></div>
+        </div>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" placeholder="Escribe algo a la comunidad…" maxlength="120">
+          <button id="chatSend" aria-label="Enviar">➤</button>
+        </div>
+        <div class="emoji-picks" id="emojiPicks">
+          <button data-e="🔥">🔥</button><button data-e="❤️">❤️</button><button data-e="🎧">🎧</button>
+          <button data-e="😂">😂</button><button data-e="✨">✨</button><button data-e="🙌">🙌</button>
+        </div>
       </div>
-      <div class="emoji-picks" id="emojiPicks">
-        <button data-e="🔥">🔥</button>
-        <button data-e="❤️">❤️</button>
-        <button data-e="🎧">🎧</button>
-        <button data-e="😂">😂</button>
-        <button data-e="✨">✨</button>
-        <button data-e="🙌">🙌</button>
+    </section>
+
+    <!-- ESTUDIO DEL DJ (oculto hasta login exitoso) -->
+    <section class="dj-studio hidden" id="djStudio">
+      <div class="studio-banner">
+        <div>
+          <div class="st-title" id="studioDjName">Panel DJ</div>
+          <div class="st-sub">Este es tu estudio de transmisión. Actívalo cuando estés listo para salir al aire.</div>
+        </div>
+        <button class="go-live-btn" id="goLiveBtn"><span class="dot-rec"></span> Emitir Live</button>
       </div>
-    </div>
-  </section>
+      <div class="studio-body">
+        <div class="studio-preview" id="studioPreview">
+          <video id="studioVideo" autoplay playsinline muted></video>
+          <div class="studio-preview-placeholder">Presiona "Emitir Live" para activar tu cámara y micrófono en pantalla completa, con el chat de la radio encima.</div>
+        </div>
+        <div class="studio-error" id="studioError"></div>
+      </div>
+    </section>
+  </div>
 
   <footer class="copy">FRECUENCIA NOCTURNA · Radio online · Transmitiendo desde algún lugar de la noche</footer>
+</div>
+
+<!-- TRANSMISIÓN EN PANTALLA COMPLETA (vista del DJ al emitir) -->
+<div class="fs-live" id="fsLive">
+  <video id="fsVideo" autoplay playsinline muted></video>
+  <div class="fs-overlay-grad"></div>
+  <div class="fs-top-bar">
+    <div class="fs-badge"><span class="r"></span> EN VIVO</div>
+    <div class="fs-controls">
+      <button id="fsExitBtn">⛶ Salir de pantalla completa</button>
+      <button class="end" id="fsEndBtn">⏹ Finalizar transmisión</button>
+    </div>
+  </div>
+  <div class="fs-chat-zone">
+    <div class="fs-chat-stream" id="fsChatStream">
+      <div class="fs-emoji-layer" id="fsEmojiLayer"></div>
+    </div>
+    <div class="fs-chat-input-row">
+      <input type="text" id="fsChatInput" placeholder="Escribe en el chat…" maxlength="120">
+      <button id="fsChatSend">➤</button>
+    </div>
+  </div>
 </div>
 
 <!-- MODAL ADMIN -->
 <div class="modal-overlay" id="adminOverlay">
   <div class="modal">
     <button class="close-x" data-close>✕</button>
-    <h3>Acceso administrador</h3>
-    <div class="modal-sub">Ingresa tus credenciales para continuar.</div>
+    <h3 id="adminModalTitle">Acceso administrador</h3>
+    <div class="modal-sub" id="adminModalSub">Ingresa tus credenciales para continuar.</div>
 
     <div class="modal-error" id="adminError">Los datos ingresados no son correctos. Verifica e intenta nuevamente.</div>
-    <div class="modal-success" id="adminSuccess">✔ Acceso concedido. Bienvenido al panel administrador.</div>
 
     <form id="adminForm">
-      <div class="field">
-        <label>Nombre completo</label>
-        <input type="text" id="admName" autocomplete="off" required>
-      </div>
-      <div class="field">
-        <label>RUT</label>
-        <input type="text" id="admRut" autocomplete="off" placeholder="Sin puntos ni guion" required>
-      </div>
-      <div class="field">
-        <label>Teléfono</label>
-        <input type="tel" id="admPhone" autocomplete="off" required>
-      </div>
-      <div class="field">
-        <label>Clave</label>
-        <input type="password" id="admPass" autocomplete="off" required>
-      </div>
+      <div class="field"><label>Nombre completo</label><input type="text" id="admName" autocomplete="off" required></div>
+      <div class="field"><label>RUT</label><input type="text" id="admRut" autocomplete="off" placeholder="Sin puntos ni guion" required></div>
+      <div class="field"><label>Teléfono</label><input type="tel" id="admPhone" autocomplete="off" required></div>
+      <div class="field"><label>Clave</label><input type="password" id="admPass" autocomplete="off" required></div>
       <button type="submit" class="submit-btn">Ingresar</button>
     </form>
+
+    <div id="adminPanel" class="hidden">
+      <div class="modal-sub" style="margin-bottom:14px;">Activa o desactiva las cuentas de DJ registradas.</div>
+      <div class="dj-admin-list" id="djAdminList"></div>
+    </div>
   </div>
 </div>
 
@@ -963,55 +665,81 @@
   <div class="modal">
     <button class="close-x" data-close>✕</button>
     <h3>Modo oyente</h3>
-    <div class="modal-sub">Ya estás dentro.</div>
-    <p class="simple-modal-msg">Tu reproductor está activo abajo. Sube el volumen, sigue el chat en vivo y disfruta la transmisión — no necesitas cuenta para escuchar.</p>
-    <button class="submit-btn" id="oyenteConfirmBtn" style="margin-top:20px;">Entendido, ¡a escuchar!</button>
+    <div class="modal-sub">Elige un apodo para participar en el chat de la comunidad.</div>
+    <div class="modal-error" id="oyenteError">Escribe un apodo para continuar.</div>
+    <form id="oyenteForm">
+      <div class="field"><label>Tu apodo</label><input type="text" id="oyenteNickInput" maxlength="20" placeholder="Ej: Nocturno23" required></div>
+      <button type="submit" class="submit-btn">Entrar a la radio</button>
+    </form>
   </div>
 </div>
 
-<!-- MODAL DJ -->
+<!-- MODAL DJ (registro / login) -->
 <div class="modal-overlay" id="djOverlay">
-  <div class="modal modal-dj">
+  <div class="modal">
     <button class="close-x" data-close>✕</button>
     <h3>Acceso DJ</h3>
-    <div class="modal-sub">Panel de transmisión</div>
-    <p class="simple-modal-msg">El ingreso como DJ requiere una cuenta habilitada por la producción de la radio. Si ya tienes credenciales de DJ, contacta al administrador para vincular tu acceso.</p>
+    <div class="modal-sub">Regístrate o inicia sesión si tu cuenta ya fue activada.</div>
 
-    <div class="live-cam-box">
-      <video id="djCamPreview" autoplay playsinline muted></video>
-      <div class="live-cam-placeholder" id="djCamPlaceholder">
-        <span class="cam-ic">🎥</span>
-        <span>Sin transmisión activa</span>
-      </div>
-      <div class="live-cam-badge" id="djLiveBadge"><span class="r"></span> EN VIVO</div>
-      <div class="mic-badge" id="djMicBadge">🎤 MIC ACTIVO</div>
-      <div class="cam-chat-overlay" id="camChatOverlay">
-        <div class="cam-chat-stream" id="camChatStream"></div>
-        <div class="cam-emoji-layer" id="camEmojiLayer"></div>
-      </div>
-    </div>
-    <div class="cam-error" id="djCamError"></div>
-
-    <div class="device-toggles">
-      <button type="button" class="toggle-btn cam" id="camToggleBtn">
-        <span class="ic">🎥</span> Activar cámara
-      </button>
-      <button type="button" class="toggle-btn mic" id="micToggleBtn">
-        <span class="ic">🎤</span> Activar micrófono
-      </button>
+    <div class="tabs">
+      <button type="button" class="tab-btn active" id="tabRegistro">Registrarse</button>
+      <button type="button" class="tab-btn" id="tabLogin">Iniciar sesión</button>
     </div>
 
-    <button class="submit-btn" data-close style="margin-top:14px;" id="djCloseBtn">Cerrar</button>
+    <!-- Registro -->
+    <div id="djRegistroView">
+      <div class="modal-error" id="djRegError"></div>
+      <div class="modal-success" id="djRegSuccess">✔ Registro enviado. Espera a que el administrador active tu cuenta para poder ingresar.</div>
+      <form id="djRegForm">
+        <div class="field"><label>Nombre completo</label><input type="text" id="djRegNombre" required></div>
+        <div class="field"><label>Usuario</label><input type="text" id="djRegUsuario" placeholder="Nombre de usuario para ingresar" required></div>
+        <div class="field"><label>Teléfono</label><input type="tel" id="djRegTelefono" required></div>
+        <div class="field"><label>Clave</label><input type="password" id="djRegClave" required></div>
+        <button type="submit" class="submit-btn">Enviar registro</button>
+      </form>
+    </div>
+
+    <!-- Login -->
+    <div id="djLoginView" class="hidden">
+      <div class="modal-error" id="djLoginError"></div>
+      <form id="djLoginForm">
+        <div class="field"><label>Usuario</label><input type="text" id="djLoginUsuario" required></div>
+        <div class="field"><label>Clave</label><input type="password" id="djLoginClave" required></div>
+        <button type="submit" class="submit-btn">Ingresar</button>
+      </form>
+    </div>
   </div>
 </div>
 
 <script>
-// ---------- MENU MOBILE ----------
+// ============ ESTADO GLOBAL (en memoria — se reinicia al recargar la página) ============
+const djAccounts = [];           // {id, nombre, usuario, telefono, clave, activo}
+let oyenteNick = null;
+let djLogueado = null;           // cuenta del DJ actualmente logueado
+let camTrack = null;
+let micTrack = null;
+
+const ADMIN_HASH = {
+  name: 'luis osvaldo guzman guzman',
+  rut: '136033611',
+  pass: 'radio@2027'
+};
+function normalize(str){ return str.trim().toLowerCase().replace(/\s+/g,' '); }
+function normalizeRut(str){ return str.trim().toLowerCase().replace(/[.\-\s]/g,''); }
+
+// ============ MENU MOBILE Y SCROLL ============
 document.getElementById('menuToggle').addEventListener('click', ()=>{
   document.getElementById('mainMenu').classList.toggle('open');
 });
+document.querySelectorAll('[data-scroll]').forEach(el=>{
+  el.addEventListener('click', ()=>{
+    const target = el.dataset.scroll === 'inicio' ? document.querySelector('.access') : document.getElementById(el.dataset.scroll);
+    if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+    document.getElementById('mainMenu').classList.remove('open');
+  });
+});
 
-// ---------- WAVEFORM BARS ----------
+// ============ WAVEFORM DEL BANNER ============
 const wf = document.getElementById('waveform');
 for(let i=0;i<48;i++){
   const s = document.createElement('span');
@@ -1020,71 +748,9 @@ for(let i=0;i<48;i++){
   wf.appendChild(s);
 }
 
-// ---------- PLAYER (conectado al stream real) ----------
-const radioAudio = document.getElementById('radioAudio');
-const playBtn = document.getElementById('playBtn');
-const playIcon = document.getElementById('playIcon');
-const meta = document.getElementById('trackMeta');
-
-const ICON_PLAY = '<path d="M8 5v14l11-7z"/>';
-const ICON_PAUSE = '<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>';
-
-radioAudio.volume = 0.7;
-
-playBtn.addEventListener('click', ()=>{
-  if(radioAudio.paused){
-    meta.textContent = 'STREAM · ⏳ Conectando…';
-    radioAudio.play().catch(()=>{
-      meta.textContent = 'STREAM · ⚠ No se pudo conectar a la transmisión';
-      playIcon.innerHTML = ICON_PLAY;
-    });
-  } else {
-    radioAudio.pause();
-  }
-});
-
-radioAudio.addEventListener('playing', ()=>{
-  playIcon.innerHTML = ICON_PAUSE;
-  meta.textContent = 'STREAM · ● EN VIVO';
-});
-radioAudio.addEventListener('pause', ()=>{
-  playIcon.innerHTML = ICON_PLAY;
-  meta.textContent = 'STREAM · ❚❚ EN PAUSA';
-});
-radioAudio.addEventListener('waiting', ()=>{
-  meta.textContent = 'STREAM · ⏳ Cargando…';
-});
-radioAudio.addEventListener('error', ()=>{
-  playIcon.innerHTML = ICON_PLAY;
-  meta.textContent = 'STREAM · ⚠ Transmisión no disponible';
-});
-
-document.getElementById('volSlider').addEventListener('input', (e)=>{
-  radioAudio.volume = e.target.value / 100;
-});
-
-const listenerEl = document.getElementById('listenerCount');
-setInterval(()=>{
-  let n = parseInt(listenerEl.textContent,10);
-  n += Math.floor(Math.random()*7)-3;
-  if(n<180) n=180;
-  listenerEl.textContent = n;
-},2600);
-
-// ---------- MODALES GENERICO ----------
+// ============ MODALES GENÉRICO ============
 function openModal(id){ document.getElementById(id).classList.add('open'); }
 function closeModal(id){ document.getElementById(id).classList.remove('open'); }
-
-document.getElementById('btnOyente').addEventListener('click', ()=> openModal('oyenteOverlay'));
-document.getElementById('btnDj').addEventListener('click', ()=> openModal('djOverlay'));
-document.getElementById('btnAdmin').addEventListener('click', ()=>{
-  document.getElementById('adminForm').reset();
-  document.getElementById('adminError').classList.remove('show');
-  document.getElementById('adminSuccess').classList.remove('show');
-  document.getElementById('adminForm').style.display = 'flex';
-  document.getElementById('adminForm').style.flexDirection = 'column';
-  openModal('adminOverlay');
-});
 document.querySelectorAll('[data-close]').forEach(el=>{
   el.addEventListener('click', (e)=>{
     const overlay = e.target.closest('.modal-overlay');
@@ -1095,50 +761,58 @@ document.querySelectorAll('.modal-overlay').forEach(ov=>{
   ov.addEventListener('click', (e)=>{ if(e.target === ov) closeModal(ov.id); });
 });
 
-// ---------- MODO OYENTE: desbloquea SOLO el player ----------
-const playerSection = document.getElementById('playerSection');
-const chatSection = document.getElementById('comunidad');
-let oyenteActivo = false;
-let chatDesbloqueado = false;
-
-function activarModoOyente(){
-  if(!oyenteActivo){
-    oyenteActivo = true;
-    playerSection.classList.remove('locked');
-    refreshListenerDjView();
-  }
-  closeModal('oyenteOverlay');
-  setTimeout(()=> playerSection.scrollIntoView({behavior:'smooth', block:'start'}), 150);
-}
-
-function activarChat(){
-  if(!chatDesbloqueado){
-    chatDesbloqueado = true;
-    chatSection.classList.remove('locked');
-    if(typeof sembrarChatInicial === 'function') sembrarChatInicial();
-  }
-  setTimeout(()=> chatSection.scrollIntoView({behavior:'smooth', block:'start'}), 100);
-}
-
-document.getElementById('oyenteConfirmBtn').addEventListener('click', activarModoOyente);
-document.getElementById('playerOpenOyente').addEventListener('click', ()=>{
-  if(oyenteActivo){ playerSection.scrollIntoView({behavior:'smooth', block:'start'}); }
-  else{ openModal('oyenteOverlay'); }
+document.getElementById('btnOyente').addEventListener('click', ()=> openModal('oyenteOverlay'));
+document.getElementById('btnDj').addEventListener('click', ()=> openModal('djOverlay'));
+document.getElementById('btnAdmin').addEventListener('click', ()=>{
+  document.getElementById('adminForm').reset();
+  document.getElementById('adminForm').classList.remove('hidden');
+  document.getElementById('adminPanel').classList.add('hidden');
+  document.getElementById('adminError').classList.remove('show');
+  document.getElementById('adminModalTitle').textContent = 'Acceso administrador';
+  document.getElementById('adminModalSub').textContent = 'Ingresa tus credenciales para continuar.';
+  openModal('adminOverlay');
 });
-document.getElementById('chatOpenBtn').addEventListener('click', activarChat);
 
-// ---------- VALIDACIÓN ADMIN (credenciales no se muestran en la interfaz) ----------
-function normalize(str){
-  return str.trim().toLowerCase().replace(/\s+/g,' ');
+// ============ OYENTE: APODO OBLIGATORIO ============
+const listenerRoom = document.getElementById('listenerRoom');
+document.getElementById('oyenteForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const nick = document.getElementById('oyenteNickInput').value.trim();
+  const errEl = document.getElementById('oyenteError');
+  if(!nick){ errEl.classList.add('show'); return; }
+  errEl.classList.remove('show');
+  oyenteNick = nick;
+  document.getElementById('roomWelcome').textContent = 'CONECTADO COMO ' + nick.toUpperCase();
+  listenerRoom.classList.remove('hidden');
+  closeModal('oyenteOverlay');
+  refreshListenerDjView();
+  setTimeout(()=> listenerRoom.scrollIntoView({behavior:'smooth', block:'start'}), 150);
+});
+
+// ============ ADMIN: LOGIN + PANEL DE ACTIVACIÓN DE DJs ============
+function renderDjAdminList(){
+  const list = document.getElementById('djAdminList');
+  if(djAccounts.length === 0){
+    list.innerHTML = '<div class="empty-note">Aún no hay DJs registrados.</div>';
+    return;
+  }
+  list.innerHTML = '';
+  djAccounts.forEach(acc=>{
+    const row = document.createElement('div');
+    row.className = 'dj-admin-row';
+    row.innerHTML =
+      '<div class="info"><div class="nm">'+acc.nombre+'</div><div class="us">@'+acc.usuario+'</div></div>' +
+      '<span class="status-pill '+(acc.activo?'on':'off')+'">'+(acc.activo?'ACTIVO':'INACTIVO')+'</span>' +
+      '<button class="toggle-dj-btn '+(acc.activo?'deactivate':'activate')+'" data-id="'+acc.id+'">'+(acc.activo?'Desactivar':'Activar')+'</button>';
+    list.appendChild(row);
+  });
+  list.querySelectorAll('.toggle-dj-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const acc = djAccounts.find(a=> String(a.id) === btn.dataset.id);
+      if(acc){ acc.activo = !acc.activo; renderDjAdminList(); }
+    });
+  });
 }
-function normalizeRut(str){
-  return str.trim().toLowerCase().replace(/[.\-\s]/g,'');
-}
-const ADMIN_HASH = {
-  name: normalize('luis osvaldo guzman guzman'),
-  rut: normalizeRut('136033611'),
-  pass: 'radio@2027'
-};
 
 document.getElementById('adminForm').addEventListener('submit', function(e){
   e.preventDefault();
@@ -1146,75 +820,133 @@ document.getElementById('adminForm').addEventListener('submit', function(e){
   const rut = normalizeRut(document.getElementById('admRut').value);
   const phone = document.getElementById('admPhone').value.trim();
   const pass = document.getElementById('admPass').value;
-
   const errEl = document.getElementById('adminError');
-  const okEl = document.getElementById('adminSuccess');
 
   const valid = (name === ADMIN_HASH.name) && (rut === ADMIN_HASH.rut) && (pass === ADMIN_HASH.pass) && phone.length > 0;
 
   if(valid){
     errEl.classList.remove('show');
-    this.style.display = 'none';
-    okEl.classList.add('show');
-    setTimeout(()=>{
-      closeModal('adminOverlay');
-      okEl.classList.remove('show');
-      this.style.display = 'flex';
-      this.style.flexDirection = 'column';
-      alert('Panel administrador: aquí se integraría la gestión de la radio (programación, DJs, usuarios).');
-    },1400);
+    this.classList.add('hidden');
+    document.getElementById('adminModalTitle').textContent = 'Panel administrador';
+    document.getElementById('adminModalSub').textContent = 'Gestión de cuentas DJ';
+    document.getElementById('adminPanel').classList.remove('hidden');
+    renderDjAdminList();
   } else {
-    okEl.classList.remove('show');
     errEl.classList.add('show');
   }
 });
 
-// ---------- DJ: ACTIVAR CÁMARA Y MICRÓFONO POR SEPARADO ----------
-const djCamBox = document.querySelector('.live-cam-box');
-const djCamVideo = document.getElementById('djCamPreview');
-const djCamError = document.getElementById('djCamError');
-const djLiveBadge = document.getElementById('djLiveBadge');
-const djMicBadge = document.getElementById('djMicBadge');
-const camToggleBtn = document.getElementById('camToggleBtn');
-const micToggleBtn = document.getElementById('micToggleBtn');
+// ============ DJ: TABS REGISTRO / LOGIN ============
+const tabRegistro = document.getElementById('tabRegistro');
+const tabLogin = document.getElementById('tabLogin');
+const djRegistroView = document.getElementById('djRegistroView');
+const djLoginView = document.getElementById('djLoginView');
+tabRegistro.addEventListener('click', ()=>{
+  tabRegistro.classList.add('active'); tabLogin.classList.remove('active');
+  djRegistroView.classList.remove('hidden'); djLoginView.classList.add('hidden');
+});
+tabLogin.addEventListener('click', ()=>{
+  tabLogin.classList.add('active'); tabRegistro.classList.remove('active');
+  djLoginView.classList.remove('hidden'); djRegistroView.classList.add('hidden');
+});
 
-let camTrack = null;
-let micTrack = null;
+// ============ DJ: REGISTRO ============
+let djIdCounter = 1;
+document.getElementById('djRegForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const nombre = document.getElementById('djRegNombre').value.trim();
+  const usuario = document.getElementById('djRegUsuario').value.trim().toLowerCase();
+  const telefono = document.getElementById('djRegTelefono').value.trim();
+  const clave = document.getElementById('djRegClave').value;
+  const errEl = document.getElementById('djRegError');
+  const okEl = document.getElementById('djRegSuccess');
 
-function showCamError(msg){
-  djCamError.textContent = msg;
-  djCamError.classList.add('show');
-}
-function clearCamError(){
-  djCamError.classList.remove('show');
-}
-
-function refreshPreviewStream(){
-  const tracks = [];
-  if(camTrack) tracks.push(camTrack);
-  if(micTrack) tracks.push(micTrack);
-  if(tracks.length){
-    djCamVideo.srcObject = new MediaStream(tracks);
-  } else {
-    djCamVideo.srcObject = null;
+  if(djAccounts.some(a=> a.usuario === usuario)){
+    okEl.classList.remove('show');
+    errEl.textContent = 'Ese nombre de usuario ya está registrado. Elige otro.';
+    errEl.classList.add('show');
+    return;
   }
-  // el video (y el chat sobrepuesto) se muestran mientras la cámara esté activa
-  djCamBox.classList.toggle('active', !!camTrack);
-  djLiveBadge.style.display = camTrack ? 'flex' : 'none';
-  djMicBadge.classList.toggle('on', !!micTrack);
+  errEl.classList.remove('show');
+  djAccounts.push({ id: djIdCounter++, nombre, usuario, telefono, clave, activo:false });
+  this.reset();
+  this.classList.add('hidden');
+  okEl.classList.add('show');
+  setTimeout(()=>{
+    okEl.classList.remove('show');
+    this.classList.remove('hidden');
+  }, 3200);
+});
 
-  if(camTrack){ startCamChatFeed(); } else { stopCamChatFeed(); }
-  refreshListenerDjView();
-}
+// ============ DJ: LOGIN ============
+document.getElementById('djLoginForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const usuario = document.getElementById('djLoginUsuario').value.trim().toLowerCase();
+  const clave = document.getElementById('djLoginClave').value;
+  const errEl = document.getElementById('djLoginError');
 
-// refleja la transmisión activa del DJ en el reproductor del oyente
+  const acc = djAccounts.find(a=> a.usuario === usuario && a.clave === clave);
+  if(!acc){
+    errEl.textContent = 'Usuario o clave incorrectos.';
+    errEl.classList.add('show');
+    return;
+  }
+  if(!acc.activo){
+    errEl.textContent = 'Tu cuenta aún no ha sido activada por el administrador.';
+    errEl.classList.add('show');
+    return;
+  }
+  errEl.classList.remove('show');
+  djLogueado = acc;
+  this.reset();
+  closeModal('djOverlay');
+  document.getElementById('studioDjName').textContent = 'Estudio de ' + acc.nombre;
+  document.getElementById('djStudio').classList.remove('hidden');
+  setTimeout(()=> document.getElementById('djStudio').scrollIntoView({behavior:'smooth', block:'start'}), 150);
+});
+
+// ============ SALA DEL OYENTE: PLAYER CONECTADO AL STREAM REAL ============
+const radioAudio = document.getElementById('radioAudio');
+const playBtn = document.getElementById('playBtn');
+const playIcon = document.getElementById('playIcon');
+const meta = document.getElementById('trackMeta');
+const ICON_PLAY = '<path d="M8 5v14l11-7z"/>';
+const ICON_PAUSE = '<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>';
+radioAudio.volume = 0.7;
+
+playBtn.addEventListener('click', ()=>{
+  if(radioAudio.paused){
+    meta.textContent = 'STREAM · ⏳ Conectando…';
+    radioAudio.play().catch(()=>{
+      meta.textContent = 'STREAM · ⚠ No se pudo conectar a la transmisión';
+      playIcon.innerHTML = ICON_PLAY;
+    });
+  } else { radioAudio.pause(); }
+});
+radioAudio.addEventListener('playing', ()=>{ playIcon.innerHTML = ICON_PAUSE; meta.textContent = 'STREAM · ● EN VIVO'; });
+radioAudio.addEventListener('pause', ()=>{ playIcon.innerHTML = ICON_PLAY; meta.textContent = 'STREAM · ❚❚ EN PAUSA'; });
+radioAudio.addEventListener('waiting', ()=>{ meta.textContent = 'STREAM · ⏳ Cargando…'; });
+radioAudio.addEventListener('error', ()=>{ playIcon.innerHTML = ICON_PLAY; meta.textContent = 'STREAM · ⚠ Transmisión no disponible'; });
+document.getElementById('volSlider').addEventListener('input', (e)=>{ radioAudio.volume = e.target.value / 100; });
+
+const listenerEl = document.getElementById('listenerCount');
+setInterval(()=>{
+  let n = parseInt(listenerEl.textContent,10);
+  n += Math.floor(Math.random()*7)-3;
+  if(n<180) n=180;
+  listenerEl.textContent = n;
+},2600);
+
+// ============ REFLEJO DE LA TRANSMISIÓN DEL DJ HACIA LOS OYENTES ============
 function refreshListenerDjView(){
   const listenerVideo = document.getElementById('listenerDjVideo');
   const djLiveBox = document.getElementById('djLiveBox');
-  if(!listenerVideo || !djLiveBox) return;
+  const chatBgVideo = document.getElementById('chatBgVideo');
+  const chatBlock = document.getElementById('chatBlock');
   const tracks = [];
   if(camTrack) tracks.push(camTrack);
   if(micTrack) tracks.push(micTrack);
+
   if(tracks.length){
     listenerVideo.srcObject = new MediaStream(tracks);
     listenerVideo.muted = false;
@@ -1223,218 +955,150 @@ function refreshListenerDjView(){
   }
   djLiveBox.classList.toggle('active', !!camTrack);
 
-  // fondo del chat: la transmisión del DJ detrás de los mensajes
-  const chatBgVideo = document.getElementById('chatBgVideo');
-  const chatZoneEl = document.getElementById('comunidad');
-  if(chatBgVideo && chatZoneEl){
-    if(camTrack){
-      chatBgVideo.srcObject = new MediaStream([camTrack]);
-      chatZoneEl.classList.add('dj-live-bg');
-    } else {
-      chatBgVideo.srcObject = null;
-      chatZoneEl.classList.remove('dj-live-bg');
-    }
-  }
-}
-
-async function toggleCamara(){
-  clearCamError();
   if(camTrack){
-    camTrack.stop();
-    camTrack = null;
-    camToggleBtn.classList.remove('on','denied');
-    camToggleBtn.innerHTML = '<span class="ic">🎥</span> Activar cámara';
-    refreshPreviewStream();
-    return;
-  }
-  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
-    showCamError('Este navegador no permite acceder a la cámara. Prueba desde Chrome o Safari actualizados.');
-    camToggleBtn.classList.add('denied');
-    return;
-  }
-  try{
-    const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-    camTrack = stream.getVideoTracks()[0];
-    camTrack.addEventListener('ended', ()=>{ camTrack = null; camToggleBtn.classList.remove('on'); camToggleBtn.innerHTML = '<span class="ic">🎥</span> Activar cámara'; refreshPreviewStream(); });
-    camToggleBtn.classList.remove('denied');
-    camToggleBtn.classList.add('on');
-    camToggleBtn.innerHTML = '<span class="ic">⏹️</span> Detener cámara';
-    refreshPreviewStream();
-  }catch(err){
-    let msg = 'No se pudo acceder a la cámara. Revisa los permisos del navegador.';
-    if(err && err.name === 'NotAllowedError') msg = 'Permiso de cámara denegado. Actívalo en la configuración del navegador para transmitir.';
-    if(err && err.name === 'NotFoundError') msg = 'No se encontró ninguna cámara disponible en este dispositivo.';
-    showCamError(msg);
-    camToggleBtn.classList.add('denied');
+    chatBgVideo.srcObject = new MediaStream([camTrack]);
+    chatBlock.classList.add('dj-live-bg');
+  } else {
+    chatBgVideo.srcObject = null;
+    chatBlock.classList.remove('dj-live-bg');
   }
 }
-
-async function toggleMicrofono(){
-  clearCamError();
-  if(micTrack){
-    micTrack.stop();
-    micTrack = null;
-    micToggleBtn.classList.remove('on','denied');
-    micToggleBtn.innerHTML = '<span class="ic">🎤</span> Activar micrófono';
-    refreshPreviewStream();
-    return;
-  }
-  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
-    showCamError('Este navegador no permite acceder al micrófono. Prueba desde Chrome o Safari actualizados.');
-    micToggleBtn.classList.add('denied');
-    return;
-  }
-  try{
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    micTrack = stream.getAudioTracks()[0];
-    micTrack.addEventListener('ended', ()=>{ micTrack = null; micToggleBtn.classList.remove('on'); micToggleBtn.innerHTML = '<span class="ic">🎤</span> Activar micrófono'; refreshPreviewStream(); });
-    micToggleBtn.classList.remove('denied');
-    micToggleBtn.classList.add('on');
-    micToggleBtn.innerHTML = '<span class="ic">⏹️</span> Detener micrófono';
-    refreshPreviewStream();
-  }catch(err){
-    let msg = 'No se pudo acceder al micrófono. Revisa los permisos del navegador.';
-    if(err && err.name === 'NotAllowedError') msg = 'Permiso de micrófono denegado. Actívalo en la configuración del navegador para transmitir.';
-    if(err && err.name === 'NotFoundError') msg = 'No se encontró ningún micrófono disponible en este dispositivo.';
-    showCamError(msg);
-    micToggleBtn.classList.add('denied');
-  }
-}
-
-function detenerCamaraYMic(){
-  if(camTrack){ camTrack.stop(); camTrack = null; }
-  if(micTrack){ micTrack.stop(); micTrack = null; }
-  camToggleBtn.classList.remove('on','denied');
-  camToggleBtn.innerHTML = '<span class="ic">🎥</span> Activar cámara';
-  micToggleBtn.classList.remove('on','denied');
-  micToggleBtn.innerHTML = '<span class="ic">🎤</span> Activar micrófono';
-  refreshPreviewStream();
-}
-
-camToggleBtn.addEventListener('click', toggleCamara);
-micToggleBtn.addEventListener('click', toggleMicrofono);
-
-// detener cámara y micrófono al cerrar el modal
-document.getElementById('djCloseBtn').addEventListener('click', detenerCamaraYMic);
-document.getElementById('djOverlay').addEventListener('click', (e)=>{
-  if(e.target.id === 'djOverlay') detenerCamaraYMic();
+document.getElementById('listenerFsBtn').addEventListener('click', ()=>{
+  const box = document.getElementById('djLiveBox');
+  if(box.requestFullscreen){ box.requestFullscreen(); }
+  else if(box.webkitRequestFullscreen){ box.webkitRequestFullscreen(); }
 });
-document.querySelector('#djOverlay .close-x').addEventListener('click', detenerCamaraYMic);
 
-// ---------- CHAT SOBRE LA TRANSMISIÓN DEL DJ ----------
-const camChatStream = document.getElementById('camChatStream');
-const camEmojiLayer = document.getElementById('camEmojiLayer');
-let camChatInterval = null;
-
-function addCamChatMessage(user, text, color){
-  const el = document.createElement('div');
-  el.className = 'chat-msg';
-  el.style.color = color || pick(colores);
-  el.style.left = (Math.random()*6)+'px';
-  el.innerHTML = '<b>'+user+'</b>'+text;
-  camChatStream.appendChild(el);
-  setTimeout(()=> el.remove(), 5700);
-}
-
-function spawnCamEmoji(char){
-  const el = document.createElement('div');
-  el.className = 'emoji3d';
-  el.textContent = char;
-  el.style.left = (10 + Math.random()*70) + '%';
-  el.style.bottom = '10px';
-  camEmojiLayer.appendChild(el);
-  setTimeout(()=> el.remove(), 3500);
-}
-
-function startCamChatFeed(){
-  if(camChatInterval) return;
-  addCamChatMessage(pick(nombres)+': ', '¡ya estás en vivo! 🔥');
-  camChatInterval = setInterval(()=>{
-    addCamChatMessage(pick(nombres)+': ', pick(mensajesDemo));
-    if(Math.random()>0.5){ spawnCamEmoji(pick(['🔥','❤️','🎧','✨','🙌','😂'])); }
-  }, 2200);
-}
-
-function stopCamChatFeed(){
-  if(camChatInterval){ clearInterval(camChatInterval); camChatInterval = null; }
-  camChatStream.innerHTML = '';
-  camEmojiLayer.innerHTML = '';
-}
-
-// ---------- CHAT ESTILO TIKTOK ----------
-const chatStream = document.getElementById('chatStream');
-const emojiLayer = document.getElementById('emojiLayer');
+// ============ CHAT: MOTOR COMPARTIDO (sala del oyente + pantalla completa del DJ) ============
 const nombres = ['Cami_23','Nocturno','LaVale','DJRata','MateoFM','PixelWave','Sonora','Noctil','__ana','RuidoBlanco'];
 const colores = ['#00E5C7','#FF3E9A','#FFB020','#2D7CFF','#5ef79b','#ff9de2'];
 const mensajesDemo = [
-  '¡esta canción está brutal! 🔥',
-  'buenas noches desde el sur 🌙',
-  'suban el volumen porfa',
-  'el DJ de hoy la está rompiendo',
-  'alguien sabe el nombre del tema?',
-  'llevo 3 horas escuchando jaja',
-  '🎧🎧🎧',
-  'saludos a toda la comunidad',
-  'esta radio es mi terapia',
-  'primera vez aquí, se siente increíble'
+  '¡esta canción está brutal! 🔥','buenas noches desde el sur 🌙','suban el volumen porfa',
+  'el DJ de hoy la está rompiendo','alguien sabe el nombre del tema?','llevo 3 horas escuchando jaja',
+  '🎧🎧🎧','saludos a toda la comunidad','esta radio es mi terapia','primera vez aquí, se siente increíble'
 ];
-
 function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
-function addChatMessage(user, text, color){
-  const el = document.createElement('div');
-  el.className = 'chat-msg';
-  el.style.color = color || pick(colores);
-  el.style.left = (Math.random()*10)+'px';
-  el.innerHTML = '<b>'+user+'</b>'+text;
-  chatStream.appendChild(el);
-  setTimeout(()=> el.remove(), 6600);
+function chatTargets(){
+  const targets = [];
+  const roomStream = document.getElementById('chatStream');
+  const roomEmoji = document.getElementById('emojiLayer');
+  if(!listenerRoom.classList.contains('hidden')) targets.push({stream:roomStream, emoji:roomEmoji});
+  const fsLive = document.getElementById('fsLive');
+  if(fsLive.classList.contains('on')) targets.push({stream:document.getElementById('fsChatStream'), emoji:document.getElementById('fsEmojiLayer')});
+  return targets;
 }
 
-function spawnEmoji(char){
-  const el = document.createElement('div');
-  el.className = 'emoji3d';
-  el.textContent = char;
-  el.style.left = (10 + Math.random()*70) + '%';
-  el.style.bottom = '10px';
-  el.style.setProperty('--rot',(Math.random()*20-10)+'deg');
-  emojiLayer.appendChild(el);
-  setTimeout(()=> el.remove(), 3500);
+function broadcastChatMessage(user, text, color){
+  chatTargets().forEach(t=>{
+    const el = document.createElement('div');
+    el.className = 'chat-msg';
+    el.style.color = color || pick(colores);
+    el.style.left = (Math.random()*10)+'px';
+    el.innerHTML = '<b>'+user+'</b>'+text;
+    t.stream.appendChild(el);
+    setTimeout(()=> el.remove(), 6600);
+  });
+}
+function broadcastEmoji(char){
+  chatTargets().forEach(t=>{
+    const el = document.createElement('div');
+    el.className = 'emoji3d';
+    el.textContent = char;
+    el.style.left = (10 + Math.random()*70) + '%';
+    el.style.bottom = '10px';
+    t.emoji.appendChild(el);
+    setTimeout(()=> el.remove(), 3500);
+  });
 }
 
-// mensajes automáticos de demo (solo mientras el chat está desbloqueado)
 setInterval(()=>{
-  if(!chatDesbloqueado) return;
-  addChatMessage(pick(nombres)+': ', pick(mensajesDemo));
-  if(Math.random()>0.5){ spawnEmoji(pick(['🔥','❤️','🎧','✨','🙌','😂'])); }
+  if(listenerRoom.classList.contains('hidden')) return;
+  broadcastChatMessage(pick(nombres)+': ', pick(mensajesDemo));
+  if(Math.random()>0.5){ broadcastEmoji(pick(['🔥','❤️','🎧','✨','🙌','😂'])); }
 }, 2400);
 
-// envío manual
 const chatInput = document.getElementById('chatInput');
-document.getElementById('chatSend').addEventListener('click', sendChat);
-chatInput.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') sendChat(); });
-function sendChat(){
-  const val = chatInput.value.trim();
-  if(!val) return;
-  addChatMessage('Tú: ', val, '#ffffff');
-  chatInput.value='';
-  spawnEmoji(pick(['🔥','✨','🎧']));
-}
-
-// emojis flotantes interactivos al tocar los iconos
+document.getElementById('chatSend').addEventListener('click', ()=> sendChat(chatInput));
+chatInput.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') sendChat(chatInput); });
 document.querySelectorAll('#emojiPicks button').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    for(let i=0;i<3;i++){
-      setTimeout(()=> spawnEmoji(btn.dataset.e), i*120);
-    }
-  });
+  btn.addEventListener('click', ()=>{ for(let i=0;i<3;i++){ setTimeout(()=> broadcastEmoji(btn.dataset.e), i*120); } });
 });
 
-// primeros mensajes en cuanto se activa el modo oyente
-function sembrarChatInicial(){
-  addChatMessage(pick(nombres)+': ', 'llegué justo para el set en vivo 🎶');
-  setTimeout(()=> spawnEmoji('🔥'), 500);
+const fsChatInput = document.getElementById('fsChatInput');
+document.getElementById('fsChatSend').addEventListener('click', ()=> sendChat(fsChatInput));
+fsChatInput.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') sendChat(fsChatInput); });
+
+function sendChat(inputEl){
+  const val = inputEl.value.trim();
+  if(!val) return;
+  const who = oyenteNick ? oyenteNick : (djLogueado ? djLogueado.nombre + ' (DJ)' : 'Tú');
+  broadcastChatMessage(who+': ', val, '#ffffff');
+  inputEl.value = '';
+  broadcastEmoji(pick(['🔥','✨','🎧']));
 }
+
+// ============ ESTUDIO DEL DJ: EMITIR LIVE (cámara + micrófono + pantalla completa) ============
+const goLiveBtn = document.getElementById('goLiveBtn');
+const studioPreview = document.getElementById('studioPreview');
+const studioVideo = document.getElementById('studioVideo');
+const studioError = document.getElementById('studioError');
+const fsLive = document.getElementById('fsLive');
+const fsVideo = document.getElementById('fsVideo');
+
+async function emitirLive(){
+  studioError.classList.remove('show');
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    studioError.textContent = 'Este navegador no permite acceder a la cámara y el micrófono. Prueba desde Chrome o Safari actualizados.';
+    studioError.classList.add('show');
+    return;
+  }
+  try{
+    const stream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:'environment' }, audio:true });
+    camTrack = stream.getVideoTracks()[0] || null;
+    micTrack = stream.getAudioTracks()[0] || null;
+    if(camTrack){
+      camTrack.addEventListener('ended', finalizarTransmision);
+    }
+    studioVideo.srcObject = stream;
+    studioPreview.classList.add('active');
+    fsVideo.srcObject = stream;
+    fsLive.classList.add('on');
+    goLiveBtn.classList.add('live');
+    goLiveBtn.innerHTML = '<span class="dot-rec"></span> Transmitiendo…';
+    refreshListenerDjView();
+
+    if(fsLive.requestFullscreen){ fsLive.requestFullscreen().catch(()=>{}); }
+    else if(fsLive.webkitRequestFullscreen){ fsLive.webkitRequestFullscreen(); }
+  }catch(err){
+    let msg = 'No se pudo acceder a la cámara y/o el micrófono. Revisa los permisos del navegador.';
+    if(err && err.name === 'NotAllowedError') msg = 'Permiso de cámara/micrófono denegado. Actívalo en la configuración del navegador para transmitir.';
+    if(err && err.name === 'NotFoundError') msg = 'No se encontró cámara o micrófono disponible en este dispositivo.';
+    studioError.textContent = msg;
+    studioError.classList.add('show');
+  }
+}
+
+function finalizarTransmision(){
+  if(camTrack){ camTrack.stop(); camTrack = null; }
+  if(micTrack){ micTrack.stop(); micTrack = null; }
+  studioVideo.srcObject = null;
+  studioPreview.classList.remove('active');
+  fsVideo.srcObject = null;
+  fsLive.classList.remove('on');
+  goLiveBtn.classList.remove('live');
+  goLiveBtn.innerHTML = '<span class="dot-rec"></span> Emitir Live';
+  refreshListenerDjView();
+  if(document.fullscreenElement){ document.exitFullscreen().catch(()=>{}); }
+}
+
+goLiveBtn.addEventListener('click', ()=>{
+  if(camTrack || micTrack){ finalizarTransmision(); } else { emitirLive(); }
+});
+document.getElementById('fsEndBtn').addEventListener('click', finalizarTransmision);
+document.getElementById('fsExitBtn').addEventListener('click', ()=>{
+  if(document.fullscreenElement){ document.exitFullscreen().catch(()=>{}); }
+});
 </script>
 </body>
 </html>
