@@ -641,6 +641,35 @@
     overflow:hidden;
     display:flex; flex-direction:column;
   }
+  .chat-bg-video{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover;
+    z-index:0;
+    display:none;
+  }
+  .chat-zone.dj-live-bg .chat-bg-video{ display:block; }
+  .chat-bg-overlay{
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(6,5,12,0.35), rgba(6,5,12,0.82) 75%);
+    z-index:1;
+    display:none;
+  }
+  .chat-zone.dj-live-bg .chat-bg-overlay{ display:block; }
+  .chat-zone .chat-title,
+  .chat-zone .chat-content{ position:relative; z-index:2; }
+  .chat-live-tag{
+    display:none;
+    align-items:center; gap:6px;
+    font-family:var(--font-mono); font-size:10px; letter-spacing:1.5px;
+    color:#ff9d9d;
+    background:rgba(0,0,0,0.5);
+    border:1px solid rgba(255,68,68,0.5);
+    padding:4px 10px; border-radius:999px;
+    margin-left:auto;
+  }
+  .chat-zone.dj-live-bg .chat-live-tag{ display:flex; }
+  .chat-live-tag .r{ width:6px; height:6px; border-radius:50%; background:#ff4444; box-shadow:0 0 8px #ff4444; animation:pulse-dot 1.2s infinite; }
   .chat-zone .chat-title{
     font-family:var(--font-mono);
     font-size:11px; letter-spacing:2px; text-transform:uppercase;
@@ -864,6 +893,8 @@
 
   <!-- CHAT -->
   <section class="chat-zone locked" id="comunidad">
+    <video class="chat-bg-video" id="chatBgVideo" autoplay playsinline muted></video>
+    <div class="chat-bg-overlay"></div>
     <div class="locked-placeholder">
       <span class="lock-ic">🔒</span>
       <div class="locked-text">
@@ -873,7 +904,7 @@
       <button class="locked-btn" id="chatOpenBtn">Ver chat en vivo</button>
     </div>
     <div class="chat-content">
-      <div class="chat-title"><span class="lg"></span> CHAT EN VIVO</div>
+      <div class="chat-title"><span class="lg"></span> CHAT EN VIVO <span class="chat-live-tag" id="chatLiveTag"><span class="r"></span> DJ TRANSMITIENDO</span></div>
       <div class="chat-stream" id="chatStream">
         <div class="emoji-layer" id="emojiLayer"></div>
       </div>
@@ -1191,6 +1222,19 @@ function refreshListenerDjView(){
     listenerVideo.srcObject = null;
   }
   djLiveBox.classList.toggle('active', !!camTrack);
+
+  // fondo del chat: la transmisión del DJ detrás de los mensajes
+  const chatBgVideo = document.getElementById('chatBgVideo');
+  const chatZoneEl = document.getElementById('comunidad');
+  if(chatBgVideo && chatZoneEl){
+    if(camTrack){
+      chatBgVideo.srcObject = new MediaStream([camTrack]);
+      chatZoneEl.classList.add('dj-live-bg');
+    } else {
+      chatBgVideo.srcObject = null;
+      chatZoneEl.classList.remove('dj-live-bg');
+    }
+  }
 }
 
 async function toggleCamara(){
