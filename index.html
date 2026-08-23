@@ -133,14 +133,14 @@
     color:#fff; background:linear-gradient(90deg, rgba(0,229,199,0.14), rgba(255,62,154,0.10)); border-color:rgba(0,229,199,0.35);
   }
 
-  /* ---------- BANNER ---------- */
+  /* ---------- BANNER (con reproductor integrado) ---------- */
   .banner{
-    grid-area: banner; position:relative; padding:46px 40px 40px; overflow:hidden;
-    border-bottom:1px solid var(--line); min-height:230px; display:flex; flex-direction:column; justify-content:center;
+    grid-area: banner; position:relative; padding:40px 40px 34px; overflow:hidden;
+    border-bottom:1px solid var(--line); min-height:230px;
   }
   .banner .waveform{
-    position:absolute; left:0; right:0; bottom:0; height:110px; display:flex; align-items:flex-end; gap:4px;
-    padding:0 40px; opacity:0.5; pointer-events:none;
+    position:absolute; left:0; right:0; bottom:0; height:90px; display:flex; align-items:flex-end; gap:4px;
+    padding:0 40px; opacity:0.35; pointer-events:none;
   }
   .banner .waveform span{
     flex:1; background:linear-gradient(180deg, var(--cyan), var(--magenta)); border-radius:3px 3px 0 0;
@@ -150,15 +150,23 @@
   .banner-tag{
     display:inline-flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:11px;
     letter-spacing:2px; color:var(--amber); background:rgba(255,176,32,0.1);
-    border:1px solid rgba(255,176,32,0.35); padding:5px 12px; border-radius:999px; width:fit-content; margin-bottom:18px;
+    border:1px solid rgba(255,176,32,0.35); padding:5px 12px; border-radius:999px; width:fit-content; margin-bottom:16px;
   }
   .banner-tag .r{ width:6px; height:6px; border-radius:50%; background:#ff4444; box-shadow:0 0 8px #ff4444; animation:pulse-dot 1.2s infinite; }
   .banner h1{
-    font-family:var(--font-display); font-size:clamp(38px, 6vw, 68px); line-height:0.95; letter-spacing:0.5px;
+    font-family:var(--font-display); font-size:clamp(32px, 5vw, 54px); line-height:0.95; letter-spacing:0.5px;
     background:linear-gradient(90deg,#fff, var(--cyan) 55%, var(--magenta)); -webkit-background-clip:text; background-clip:text; color:transparent;
-    max-width:720px;
+    max-width:640px;
   }
-  .banner p{ margin-top:14px; color:var(--text-mid); max-width:480px; font-size:14.5px; line-height:1.6; z-index:2; position:relative; }
+  .banner p{ margin-top:12px; color:var(--text-mid); max-width:480px; font-size:13.5px; line-height:1.55; position:relative; }
+  .banner-content{ position:relative; z-index:2; display:flex; align-items:center; justify-content:space-between; gap:30px; flex-wrap:wrap; }
+  .banner-player{
+    flex-shrink:0; width:100%; max-width:420px;
+    background:rgba(19,17,32,0.7); backdrop-filter:blur(8px);
+    border:1px solid var(--line); border-radius:16px; padding:18px 20px;
+  }
+  .banner-player .player-controls-row{ display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:0; }
+  @media (max-width:700px){ .banner-content{ flex-direction:column; align-items:stretch; } }
 
   /* ---------- ACCESO (PÁGINA PRINCIPAL) ---------- */
   .access{
@@ -257,6 +265,7 @@
   .toggle-dj-btn.activate{ background:linear-gradient(120deg, var(--green), var(--green-dark)); color:#fff; }
   .toggle-dj-btn.deactivate{ background:linear-gradient(120deg, #ff4444, #a11313); color:#fff; }
   .empty-note{ text-align:center; color:var(--text-low); font-size:12.5px; padding:20px 0; }
+  .admin-panel-divider{ height:1px; background:var(--line); margin:22px 0 18px; }
 
   /* ---------- SALA DEL OYENTE (player + transmisión + chat) ---------- */
   .room{ grid-area:room; }
@@ -343,17 +352,22 @@
   }
   .chat-block.dj-live-bg .chat-live-tag{ display:flex; }
   .chat-live-tag .r{ width:6px; height:6px; border-radius:50%; background:#ff4444; box-shadow:0 0 8px #ff4444; animation:pulse-dot 1.2s infinite; }
-  .chat-stream{ flex:1; position:relative; min-height:200px; max-width:520px; }
+  .chat-stream{ flex:1; position:relative; min-height:200px; width:100%; }
   .chat-msg{
-    position:absolute; bottom:0; left:0; font-weight:700; font-size:14.5px; line-height:1.4;
+    position:absolute; bottom:0; left:50%; font-weight:700; font-size:14.5px; line-height:1.4;
     text-shadow: 0 2px 10px rgba(0,0,0,0.9), 0 0 2px rgba(0,0,0,0.8); background:none; pointer-events:none;
-    animation: chat-rise 6.5s linear forwards; max-width:480px;
+    animation: chat-rise 6.5s linear forwards; max-width:48%; text-align:left;
   }
   .chat-msg b{ font-weight:800; margin-right:6px; }
   @keyframes chat-rise{
     0%{ transform:translateY(20px); opacity:0; } 8%{ opacity:1; transform:translateY(0); }
     80%{ opacity:1; } 100%{ transform:translateY(-260px); opacity:0; }
   }
+  .chat-ban-error{
+    display:none; background:rgba(255,62,90,0.12); border:1px solid rgba(255,62,90,0.4); color:#ff8a97;
+    font-size:12px; padding:9px 12px; border-radius:10px; margin-top:10px; max-width:520px;
+  }
+  .chat-ban-error.show{ display:block; }
   .emoji-layer{ position:absolute; inset:0; pointer-events:none; overflow:visible; }
   .emoji3d{
     position:absolute; font-size:30px;
@@ -458,6 +472,32 @@
     text-align:center; padding:18px; color:var(--text-low); font-size:11.5px;
     font-family:var(--font-mono); border-top:1px solid var(--line);
   }
+
+  /* ---------- SLIDER DE REDES SOCIALES (costado derecho, a media página) ---------- */
+  .social-slider{
+    position:fixed; top:50%; right:0; transform:translateY(-50%);
+    z-index:250; display:flex; align-items:center;
+  }
+  .social-panel{
+    display:flex; flex-direction:column; align-items:center; gap:14px;
+    background:var(--bg-panel-2); border:1px solid var(--line); border-right:none;
+    border-radius:16px 0 0 16px; padding:18px 14px;
+    transition: transform .3s ease, opacity .3s ease;
+    transform:translateX(0); opacity:1;
+  }
+  .social-slider.closed .social-panel{ transform:translateX(105%); opacity:0; pointer-events:none; }
+  .social-link{
+    width:46px; height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-size:21px; text-decoration:none; color:#fff; transition: transform .15s ease;
+  }
+  .social-link:hover{ transform:scale(1.08); }
+  .social-tiktok{ background:#000; }
+  .social-facebook{ background:#1877F2; }
+  .social-handle{
+    flex-shrink:0; width:26px; height:64px; border:1px solid var(--line); border-right:none;
+    border-radius:10px 0 0 10px; background:linear-gradient(160deg, var(--magenta), var(--cyan));
+    color:#fff; cursor:pointer; font-size:13px;
+  }
 </style>
 </head>
 <body>
@@ -488,11 +528,30 @@
     </ul>
   </aside>
 
-  <!-- BANNER -->
+  <!-- BANNER (con reproductor de audio integrado) -->
   <section class="banner" id="banner">
-    <span class="banner-tag"><span class="r"></span> AL AIRE · 24/7</span>
-    <h1>Tu noche<br>tiene frecuencia.</h1>
-    <p>Radio online sin cortes: música seleccionada, DJs en vivo y una comunidad que no para de sonar.</p>
+    <div class="banner-content">
+      <div>
+        <span class="banner-tag"><span class="r"></span> AL AIRE · 24/7</span>
+        <h1>Tu noche<br>tiene frecuencia.</h1>
+        <p>Radio online sin cortes: música seleccionada, DJs en vivo y una comunidad que no para de sonar.</p>
+      </div>
+      <div class="banner-player">
+        <audio id="radioAudio" preload="none" src="http://node-19.zeno.fm:80/0swxrk8k8mzuv.acc"></audio>
+        <div class="player-controls-row">
+          <button class="play-btn" id="playBtn" aria-label="Reproducir">
+            <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <div class="player-info">
+            <div class="track" id="trackName">Set en vivo — DJ Nocturno</div>
+            <div class="meta" id="trackMeta">STREAM · ○ Presiona play para escuchar</div>
+          </div>
+          <div class="bars"><span></span><span></span><span></span><span></span><span></span></div>
+          <div class="listeners"><span class="lg"></span> <span id="listenerCount">312</span> oyentes</div>
+          <div class="volume">🔈 <input type="range" min="0" max="100" value="70" id="volSlider"></div>
+        </div>
+      </div>
+    </div>
     <div class="waveform" id="waveform"></div>
   </section>
 
@@ -544,11 +603,11 @@
     </div>
   </section>
 
-  <!-- SALA DEL OYENTE (oculta hasta que ingresa con apodo) -->
+  <!-- SALA DE TRANSMISIÓN Y CHAT (a pie de página, visible para todos) -->
   <div class="room" id="room">
-    <section class="listener-room hidden" id="listenerRoom">
-      <div class="room-title">Tu sala de escucha</div>
-      <div class="room-sub" id="roomWelcome">CONECTADO COMO OYENTE</div>
+    <section class="listener-room" id="listenerRoom">
+      <div class="room-title">Transmisión y chat en vivo</div>
+      <div class="room-sub" id="roomWelcome">EL MISMO CHAT QUE VEN LOS DJ AL TRANSMITIR</div>
 
       <div class="dj-live-box" id="djLiveBox">
         <video id="listenerDjVideo" autoplay playsinline></video>
@@ -561,20 +620,6 @@
         <button class="fs-btn" id="listenerFsBtn">⛶ Pantalla completa</button>
       </div>
 
-      <div class="player-controls-row">
-        <audio id="radioAudio" preload="none" src="http://node-19.zeno.fm:80/0swxrk8k8mzuv.acc"></audio>
-        <button class="play-btn" id="playBtn" aria-label="Reproducir">
-          <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-        </button>
-        <div class="player-info">
-          <div class="track" id="trackName">Set en vivo — DJ Nocturno</div>
-          <div class="meta" id="trackMeta">STREAM · ○ Presiona play para escuchar</div>
-        </div>
-        <div class="bars"><span></span><span></span><span></span><span></span><span></span></div>
-        <div class="listeners"><span class="lg"></span> <span id="listenerCount">312</span> oyentes conectados</div>
-        <div class="volume">🔈 <input type="range" min="0" max="100" value="70" id="volSlider"></div>
-      </div>
-
       <div class="chat-block" id="chatBlock">
         <video class="chat-bg-video" id="chatBgVideo" autoplay playsinline muted></video>
         <div class="chat-bg-overlay"></div>
@@ -582,13 +627,14 @@
         <div class="chat-stream" id="chatStream">
           <div class="emoji-layer" id="emojiLayer"></div>
         </div>
-        <div class="chat-input-row">
-          <input type="text" id="chatInput" placeholder="Escribe algo a la comunidad…" maxlength="120">
-          <button id="chatSend" aria-label="Enviar">➤</button>
-        </div>
+        <div class="chat-ban-error" id="chatBanError">No puedes enviar mensajes: el administrador bloqueó tu acceso al chat.</div>
         <div class="emoji-picks" id="emojiPicks">
           <button data-e="🔥">🔥</button><button data-e="❤️">❤️</button><button data-e="🎧">🎧</button>
           <button data-e="😂">😂</button><button data-e="✨">✨</button><button data-e="🙌">🙌</button>
+        </div>
+        <div class="chat-input-row">
+          <input type="text" id="chatInput" placeholder="Escribe algo a la comunidad…" maxlength="120">
+          <button id="chatSend" aria-label="Enviar">➤</button>
         </div>
       </div>
     </section>
@@ -613,6 +659,15 @@
   </div>
 
   <footer class="copy">FRECUENCIA NOCTURNA · Radio online · Transmitiendo desde algún lugar de la noche</footer>
+</div>
+
+<!-- SLIDER DE REDES SOCIALES -->
+<div class="social-slider" id="socialSlider">
+  <button class="social-handle" id="socialHandle">⟨⟩</button>
+  <div class="social-panel">
+    <a class="social-link social-tiktok" href="https://www.tiktok.com" target="_blank" rel="noopener" aria-label="TikTok">🎵</a>
+    <a class="social-link social-facebook" href="https://www.facebook.com" target="_blank" rel="noopener" aria-label="Facebook">📘</a>
+  </div>
 </div>
 
 <!-- TRANSMISIÓN EN PANTALLA COMPLETA (vista del DJ al emitir) -->
@@ -657,6 +712,17 @@
     <div id="adminPanel" class="hidden">
       <div class="modal-sub" style="margin-bottom:14px;">Activa o desactiva las cuentas de DJ registradas.</div>
       <div class="dj-admin-list" id="djAdminList"></div>
+
+      <div class="admin-panel-divider"></div>
+      <div class="modal-sub" style="margin-bottom:14px;">Moderación del chat: bloquea usuarios por apodo/nombre. Los campos IP y MAC quedan guardados como referencia.</div>
+      <form id="banForm">
+        <div class="field"><label>Apodo o nombre</label><input type="text" id="banApodo" required></div>
+        <div class="field"><label>IP (opcional)</label><input type="text" id="banIp" placeholder="Ej: 192.168.1.10"></div>
+        <div class="field"><label>MAC (opcional)</label><input type="text" id="banMac" placeholder="Ej: 00:1A:2B:3C:4D:5E"></div>
+        <div class="field"><label>Motivo</label><input type="text" id="banMotivo" placeholder="Opcional"></div>
+        <button type="submit" class="ghost-btn" style="background:linear-gradient(120deg, #ff4444, #a11313); color:#fff; border:none;">Bloquear usuario</button>
+      </form>
+      <div class="dj-admin-list" id="banList" style="margin-top:14px;"></div>
     </div>
   </div>
 </div>
@@ -774,20 +840,25 @@ document.getElementById('btnAdmin').addEventListener('click', ()=>{
   openModal('adminOverlay');
 });
 
-// ============ OYENTE: APODO OBLIGATORIO ============
+// ============ APODO OBLIGATORIO PARA ENVIAR MENSAJES ============
 const listenerRoom = document.getElementById('listenerRoom');
 document.getElementById('oyenteForm').addEventListener('submit', function(e){
   e.preventDefault();
   const nick = document.getElementById('oyenteNickInput').value.trim();
   const errEl = document.getElementById('oyenteError');
-  if(!nick){ errEl.classList.add('show'); return; }
+  if(!nick){ errEl.textContent = 'Escribe un apodo para continuar.'; errEl.classList.add('show'); return; }
+  if(isBanned(nick)){ errEl.textContent = 'Ese apodo fue bloqueado por el administrador.'; errEl.classList.add('show'); return; }
   errEl.classList.remove('show');
   oyenteNick = nick;
-  document.getElementById('roomWelcome').textContent = 'CONECTADO COMO ' + nick.toUpperCase();
-  listenerRoom.classList.remove('hidden');
+  document.getElementById('oyenteNickInput').value = '';
   closeModal('oyenteOverlay');
-  refreshListenerDjView();
-  setTimeout(()=> listenerRoom.scrollIntoView({behavior:'smooth', block:'start'}), 150);
+  if(pendingChatInput){
+    const el = pendingChatInput;
+    pendingChatInput = null;
+    sendChat(el);
+  } else {
+    setTimeout(()=> document.getElementById('chatBlock').scrollIntoView({behavior:'smooth', block:'start'}), 150);
+  }
 });
 
 // ============ ADMIN: LOGIN + PANEL DE ACTIVACIÓN DE DJs ============
@@ -815,6 +886,42 @@ function renderDjAdminList(){
   });
 }
 
+let banIdCounter = 1;
+function renderBanList(){
+  const list = document.getElementById('banList');
+  if(bannedUsers.length === 0){
+    list.innerHTML = '<div class="empty-note">No hay usuarios bloqueados.</div>';
+    return;
+  }
+  list.innerHTML = '';
+  bannedUsers.forEach(b=>{
+    const row = document.createElement('div');
+    row.className = 'dj-admin-row';
+    const detalle = [b.ip ? ('IP: '+b.ip) : null, b.mac ? ('MAC: '+b.mac) : null].filter(Boolean).join(' · ');
+    row.innerHTML =
+      '<div class="info"><div class="nm">'+b.apodo+'</div><div class="us">'+(detalle || (b.motivo || 'Sin datos adicionales'))+'</div></div>' +
+      '<button class="toggle-dj-btn activate" data-id="'+b.id+'">Quitar</button>';
+    list.appendChild(row);
+  });
+  list.querySelectorAll('.toggle-dj-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const idx = bannedUsers.findIndex(b=> String(b.id) === btn.dataset.id);
+      if(idx > -1){ bannedUsers.splice(idx,1); renderBanList(); }
+    });
+  });
+}
+document.getElementById('banForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const apodo = document.getElementById('banApodo').value.trim();
+  const ip = document.getElementById('banIp').value.trim();
+  const mac = document.getElementById('banMac').value.trim();
+  const motivo = document.getElementById('banMotivo').value.trim();
+  if(!apodo) return;
+  bannedUsers.push({ id: banIdCounter++, apodo, ip, mac, motivo });
+  this.reset();
+  renderBanList();
+});
+
 document.getElementById('adminForm').addEventListener('submit', function(e){
   e.preventDefault();
   const name = normalize(document.getElementById('admName').value);
@@ -832,6 +939,7 @@ document.getElementById('adminForm').addEventListener('submit', function(e){
     document.getElementById('adminModalSub').textContent = 'Gestión de cuentas DJ';
     document.getElementById('adminPanel').classList.remove('hidden');
     renderDjAdminList();
+    renderBanList();
   } else {
     errEl.classList.add('show');
   }
@@ -974,21 +1082,15 @@ document.getElementById('djUnmuteBtn').addEventListener('click', function(){
 });
 document.getElementById('listenerFsBtn').addEventListener('click', openListenerFullscreen);
 
-// ============ CHAT: MOTOR COMPARTIDO (sala del oyente + pantalla completa del DJ) ============
-const nombres = ['Cami_23','Nocturno','LaVale','DJRata','MateoFM','PixelWave','Sonora','Noctil','__ana','RuidoBlanco'];
+// ============ CHAT: MOTOR COMPARTIDO (chat del sitio + pantalla completa del DJ) ============
 const colores = ['#00E5C7','#FF3E9A','#FFB020','#2D7CFF','#5ef79b','#ff9de2'];
-const mensajesDemo = [
-  '¡esta canción está brutal! 🔥','buenas noches desde el sur 🌙','suban el volumen porfa',
-  'el DJ de hoy la está rompiendo','alguien sabe el nombre del tema?','llevo 3 horas escuchando jaja',
-  '🎧🎧🎧','saludos a toda la comunidad','esta radio es mi terapia','primera vez aquí, se siente increíble'
-];
 function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
 function chatTargets(){
   const targets = [];
   const roomStream = document.getElementById('chatStream');
   const roomEmoji = document.getElementById('emojiLayer');
-  if(!listenerRoom.classList.contains('hidden')) targets.push({stream:roomStream, emoji:roomEmoji});
+  targets.push({stream:roomStream, emoji:roomEmoji});
   const fsLive = document.getElementById('fsLive');
   if(fsLive.classList.contains('on')) targets.push({stream:document.getElementById('fsChatStream'), emoji:document.getElementById('fsEmojiLayer')});
   return targets;
@@ -999,7 +1101,6 @@ function broadcastChatMessage(user, text, color){
     const el = document.createElement('div');
     el.className = 'chat-msg';
     el.style.color = color || pick(colores);
-    el.style.left = (Math.random()*10)+'px';
     el.innerHTML = '<b>'+user+'</b>'+text;
     t.stream.appendChild(el);
     setTimeout(()=> el.remove(), 6600);
@@ -1017,12 +1118,6 @@ function broadcastEmoji(char){
   });
 }
 
-setInterval(()=>{
-  if(listenerRoom.classList.contains('hidden')) return;
-  broadcastChatMessage(pick(nombres)+': ', pick(mensajesDemo));
-  if(Math.random()>0.5){ broadcastEmoji(pick(['🔥','❤️','🎧','✨','🙌','😂'])); }
-}, 2400);
-
 const chatInput = document.getElementById('chatInput');
 document.getElementById('chatSend').addEventListener('click', ()=> sendChat(chatInput));
 chatInput.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') sendChat(chatInput); });
@@ -1034,13 +1129,37 @@ const fsChatInput = document.getElementById('fsChatInput');
 document.getElementById('fsChatSend').addEventListener('click', ()=> sendChat(fsChatInput));
 fsChatInput.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') sendChat(fsChatInput); });
 
+// ---- moderación: usuarios bloqueados/baneados por el administrador ----
+const bannedUsers = []; // {id, apodo, ip, mac, motivo}
+function isBanned(nombre){
+  const n = normalize(nombre || '');
+  return bannedUsers.some(b=> b.apodo && normalize(b.apodo) === n);
+}
+
+// ---- exige apodo antes de enviar el primer mensaje ----
+let pendingChatInput = null;
 function sendChat(inputEl){
   const val = inputEl.value.trim();
   if(!val) return;
-  const who = oyenteNick ? oyenteNick : (djLogueado ? djLogueado.nombre + ' (DJ)' : 'Tú');
+
+  if(!oyenteNick && !djLogueado){
+    pendingChatInput = inputEl;
+    openModal('oyenteOverlay');
+    return;
+  }
+
+  const who = oyenteNick ? oyenteNick : (djLogueado.nombre + ' (DJ)');
+  const banErr = document.getElementById('chatBanError');
+  if(isBanned(who)){
+    banErr.classList.add('show');
+    return;
+  }
+  banErr.classList.remove('show');
+
   broadcastChatMessage(who+': ', val, '#ffffff');
   inputEl.value = '';
   broadcastEmoji(pick(['🔥','✨','🎧']));
+
 }
 
 // ============ ESTUDIO DEL DJ: EMITIR LIVE (cámara + micrófono + pantalla completa) ============
@@ -1143,6 +1262,11 @@ document.addEventListener('webkitfullscreenchange', ()=>{
   if(!document.webkitFullscreenElement && fsMode === 'viewer' && fsLive.classList.contains('on')){
     closeListenerFullscreen();
   }
+});
+
+// ============ SLIDER DE REDES SOCIALES ============
+document.getElementById('socialHandle').addEventListener('click', ()=>{
+  document.getElementById('socialSlider').classList.toggle('closed');
 });
 </script>
 </body>
