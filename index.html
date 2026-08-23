@@ -963,11 +963,7 @@ function refreshListenerDjView(){
     chatBlock.classList.remove('dj-live-bg');
   }
 }
-document.getElementById('listenerFsBtn').addEventListener('click', ()=>{
-  const box = document.getElementById('djLiveBox');
-  if(box.requestFullscreen){ box.requestFullscreen(); }
-  else if(box.webkitRequestFullscreen){ box.webkitRequestFullscreen(); }
-});
+document.getElementById('listenerFsBtn').addEventListener('click', openListenerFullscreen);
 
 // ============ CHAT: MOTOR COMPARTIDO (sala del oyente + pantalla completa del DJ) ============
 const nombres = ['Cami_23','Nocturno','LaVale','DJRata','MateoFM','PixelWave','Sonora','Noctil','__ana','RuidoBlanco'];
@@ -1045,6 +1041,9 @@ const studioVideo = document.getElementById('studioVideo');
 const studioError = document.getElementById('studioError');
 const fsLive = document.getElementById('fsLive');
 const fsVideo = document.getElementById('fsVideo');
+const fsExitBtn = document.getElementById('fsExitBtn');
+const fsEndBtn = document.getElementById('fsEndBtn');
+let fsMode = 'broadcaster'; // 'broadcaster' = DJ emitiendo, 'viewer' = oyente mirando
 
 async function emitirLive(){
   studioError.classList.remove('show');
@@ -1062,6 +1061,11 @@ async function emitirLive(){
     }
     studioVideo.srcObject = stream;
     studioPreview.classList.add('active');
+
+    fsMode = 'broadcaster';
+    fsEndBtn.classList.remove('hidden');
+    fsExitBtn.textContent = '⛶ Salir de pantalla completa';
+    fsVideo.muted = true;
     fsVideo.srcObject = stream;
     fsLive.classList.add('on');
     goLiveBtn.classList.add('live');
@@ -1092,12 +1096,44 @@ function finalizarTransmision(){
   if(document.fullscreenElement){ document.exitFullscreen().catch(()=>{}); }
 }
 
+// el oyente abre la MISMA vista de pantalla completa con chat, mostrando la transmisión del DJ
+function openListenerFullscreen(){
+  if(!camTrack && !micTrack) return;
+  fsMode = 'viewer';
+  const tracks = [];
+  if(camTrack) tracks.push(camTrack);
+  if(micTrack) tracks.push(micTrack);
+  fsVideo.muted = false;
+  fsVideo.srcObject = new MediaStream(tracks);
+  fsEndBtn.classList.add('hidden');
+  fsExitBtn.textContent = '✕ Cerrar';
+  fsLive.classList.add('on');
+  if(fsLive.requestFullscreen){ fsLive.requestFullscreen().catch(()=>{}); }
+  else if(fsLive.webkitRequestFullscreen){ fsLive.webkitRequestFullscreen(); }
+}
+function closeListenerFullscreen(){
+  fsLive.classList.remove('on');
+  fsVideo.srcObject = null;
+  if(document.fullscreenElement){ document.exitFullscreen().catch(()=>{}); }
+}
+
 goLiveBtn.addEventListener('click', ()=>{
   if(camTrack || micTrack){ finalizarTransmision(); } else { emitirLive(); }
 });
-document.getElementById('fsEndBtn').addEventListener('click', finalizarTransmision);
-document.getElementById('fsExitBtn').addEventListener('click', ()=>{
-  if(document.fullscreenElement){ document.exitFullscreen().catch(()=>{}); }
+fsEndBtn.addEventListener('click', finalizarTransmision);
+fsExitBtn.addEventListener('click', ()=>{
+  if(fsMode === 'viewer'){ closeListenerFullscreen(); }
+  else if(document.fullscreenElement){ document.exitFullscreen().catch(()=>{}); }
+});
+document.addEventListener('fullscreenchange', ()=>{
+  if(!document.fullscreenElement && fsMode === 'viewer' && fsLive.classList.contains('on')){
+    closeListenerFullscreen();
+  }
+});
+document.addEventListener('webkitfullscreenchange', ()=>{
+  if(!document.webkitFullscreenElement && fsMode === 'viewer' && fsLive.classList.contains('on')){
+    closeListenerFullscreen();
+  }
 });
 </script>
 </body>
