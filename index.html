@@ -557,6 +557,7 @@
           <span>Ningún DJ está transmitiendo video en este momento</span>
         </div>
         <div class="dj-live-badge" id="djLiveViewBadge"><span class="r"></span> DJ EN VIVO</div>
+        <button class="fs-btn" id="djUnmuteBtn" style="display:none; right:auto; left:10px;">▶ Activar sonido</button>
         <button class="fs-btn" id="listenerFsBtn">⛶ Pantalla completa</button>
       </div>
 
@@ -943,6 +944,7 @@ function refreshListenerDjView(){
   const djLiveBox = document.getElementById('djLiveBox');
   const chatBgVideo = document.getElementById('chatBgVideo');
   const chatBlock = document.getElementById('chatBlock');
+  const unmuteBtn = document.getElementById('djUnmuteBtn');
   const tracks = [];
   if(camTrack) tracks.push(camTrack);
   if(micTrack) tracks.push(micTrack);
@@ -950,19 +952,26 @@ function refreshListenerDjView(){
   if(tracks.length){
     listenerVideo.srcObject = new MediaStream(tracks);
     listenerVideo.muted = false;
-  } else {
-    listenerVideo.srcObject = null;
-  }
-  djLiveBox.classList.toggle('active', !!camTrack);
-
-  if(camTrack){
+    const playPromise = listenerVideo.play();
+    if(playPromise && playPromise.catch){
+      playPromise.catch(()=>{ unmuteBtn.style.display = 'flex'; });
+    }
     chatBgVideo.srcObject = new MediaStream([camTrack]);
+    chatBgVideo.play().catch(()=>{});
     chatBlock.classList.add('dj-live-bg');
   } else {
+    listenerVideo.srcObject = null;
     chatBgVideo.srcObject = null;
     chatBlock.classList.remove('dj-live-bg');
+    unmuteBtn.style.display = 'none';
   }
+  djLiveBox.classList.toggle('active', !!camTrack);
 }
+document.getElementById('djUnmuteBtn').addEventListener('click', function(){
+  const listenerVideo = document.getElementById('listenerDjVideo');
+  listenerVideo.muted = false;
+  listenerVideo.play().then(()=>{ this.style.display = 'none'; }).catch(()=>{});
+});
 document.getElementById('listenerFsBtn').addEventListener('click', openListenerFullscreen);
 
 // ============ CHAT: MOTOR COMPARTIDO (sala del oyente + pantalla completa del DJ) ============
